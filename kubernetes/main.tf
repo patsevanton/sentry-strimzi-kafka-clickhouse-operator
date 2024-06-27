@@ -4,6 +4,8 @@ module "kube" {
   network_id = "xxxx"
   folder_id  = "xxxx"
 
+  enable_default_rules = false
+
   master_locations = [
     {
       zone      = "ru-central1-a"

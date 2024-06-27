@@ -5,5 +5,5 @@ module "redis" {
   name        = "apatsev-redis"
   subnet_id   = "xxxxx"
   network_id  = "xxxx"
-  password    = "xxxx"
+  password    = "secretpassword"
 }
