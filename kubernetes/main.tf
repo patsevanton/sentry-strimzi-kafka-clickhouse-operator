@@ -1,11 +1,30 @@
+module "iam_accounts" {
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account"
+
+  name      = "apatsev"
+  folder_id = "xxxx"
+  folder_roles = [
+    "editor",
+    "container-registry.images.puller",
+    "k8s.tunnelClusters.agent"
+  ]
+  cloud_roles              = []
+  enable_static_access_key = false
+  enable_api_key           = false
+  enable_account_key       = false
+
+}
+
 module "kube" {
-  source = "git::https://github.com/terraform-yc-modules/terraform-yc-kubernetes.git"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes.git"
 
   network_id = "xxxx"
   folder_id  = "xxxx"
 
-  cluster_name         = "k8s-apatsev"
-  enable_default_rules = false
+  name = "k8s-apatsev"
+
+  service_account_id      = module.iam_accounts.id
+  node_service_account_id = module.iam_accounts.id
 
   master_locations = [
     {
@@ -14,22 +33,4 @@ module "kube" {
     }
   ]
 
-  master_maintenance_windows = [
-    {
-      day        = "sunday"
-      start_time = "00:00"
-      duration   = "3h"
-    }
-  ]
-
-  node_groups = {
-    "yc-k8s-ng-01" = {
-      description = "Kubernetes nodes group 01 with auto scaling"
-      auto_scale = {
-        min     = 3
-        max     = 5
-        initial = 3
-      }
-    },
-  }
 }
