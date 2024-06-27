@@ -1,2 +1,2 @@
 global:
-  imageRegistry: dockerhub.timeweb.cloud
+  imageRegistry: mirror.gcr.io

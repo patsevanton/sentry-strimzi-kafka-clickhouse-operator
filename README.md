@@ -21,6 +21,5 @@ terraform init
 terraform apply
 
 ```shell
-helmwave build
-helmwave up
+helmwave up --build
 ```

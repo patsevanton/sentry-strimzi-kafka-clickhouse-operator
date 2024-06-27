@@ -1,5 +1,5 @@
 project: "zookeeper"
-version: "10.2.5"
+version: 0.35.0
 
 registries:
   - host: registry-1.docker.io
@@ -8,11 +8,12 @@ releases:
   - name: zookeeper
     namespace: zookeeper
     create_namespace: true
-    wait: true
+    atomic: false
+    wait: false
     timeout: 5m
     max_history: 3
     chart:
       name: oci://registry-1.docker.io/bitnamicharts/zookeeper
-      version: 10.2.5
+      version: 13.4.5
     values:
-      - .values-zookeeper.yaml
+      - values-zookeeper.yaml
