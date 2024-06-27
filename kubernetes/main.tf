@@ -2,6 +2,7 @@ module "kube" {
   source = "git::https://github.com/terraform-yc-modules/terraform-yc-kubernetes.git"
 
   network_id = "xxxx"
+  folder_id  = "xxxx"
 
   master_locations = [
     {
