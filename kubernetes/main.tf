@@ -26,9 +26,9 @@ module "kube" {
     "yc-k8s-ng-01" = {
       description = "Kubernetes nodes group 01 with auto scaling"
       auto_scale = {
-        min     = 1
-        max     = 4
-        initial = 1
+        min     = 3
+        max     = 5
+        initial = 3
       }
     },
   }
