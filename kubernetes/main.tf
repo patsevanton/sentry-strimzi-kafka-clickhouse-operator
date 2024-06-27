@@ -4,6 +4,7 @@ module "kube" {
   network_id = "xxxx"
   folder_id  = "xxxx"
 
+  cluster_name         = "k8s-apatsev"
   enable_default_rules = false
 
   master_locations = [
