@@ -2,7 +2,7 @@ module "db" {
   source  = "git::https://github.com/terraform-yc-modules/terraform-yc-postgresql.git"
 
   network_id  = "xxxx"
-  name        = "test-postgresql"
+  name        = "apatsev-postgresql"
   folder_id   = "xxxx"
 
   maintenance_window = {
@@ -25,8 +25,8 @@ module "db" {
 
   databases = [
     {
-      name       = "test1"
-      owner      = "test1"
+      name       = "sentry"
+      owner      = "sentry"
       lc_collate = "ru_RU.UTF-8"
       lc_type    = "ru_RU.UTF-8"
     }
@@ -34,16 +34,16 @@ module "db" {
 
   owners = [
     {
-      name       = "test1"
+      name       = "sentry"
       conn_limit = 15
     }
   ]
 
   users = [
     {
-      name        = "test1-guest"
+      name        = "sentry-user"
       conn_limit  = 30
-      permissions = ["test1"]
+      permissions = ["sentry"]
     }
   ]
 }
