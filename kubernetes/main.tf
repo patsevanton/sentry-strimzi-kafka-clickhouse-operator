@@ -49,4 +49,6 @@ module "kube" {
     }
   }
 
+  depends_on = [ module.iam_accounts ]
+
 }
