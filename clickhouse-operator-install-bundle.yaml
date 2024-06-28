@@ -3712,7 +3712,7 @@ spec:
             name: etc-clickhouse-operator-usersd-files
       containers:
         - name: clickhouse-operator
-          image: altinity/clickhouse-operator:0.22.1
+          image: dockerhub.timeweb.cloud/altinity/clickhouse-operator:0.22.1
           imagePullPolicy: Always
           volumeMounts:
             - name: etc-clickhouse-operator-folder
@@ -3780,7 +3780,7 @@ spec:
               name: metrics
 
         - name: metrics-exporter
-          image: altinity/metrics-exporter:0.22.1
+          image: dockerhub.timeweb.cloud/altinity/metrics-exporter:0.22.1
           imagePullPolicy: Always
           volumeMounts:
             - name: etc-clickhouse-operator-folder
