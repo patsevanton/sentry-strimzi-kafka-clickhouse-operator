@@ -9,6 +9,7 @@ module "iam_accounts" {
     "k8s.tunnelClusters.agent",
     "load-balancer.admin",
     "logging.writer",
+    "vpc.privateAdmin",
     "vpc.publicAdmin",
     "vpc.user",
   ]
