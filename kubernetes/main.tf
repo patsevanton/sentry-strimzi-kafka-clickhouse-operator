@@ -4,9 +4,13 @@ module "iam_accounts" {
   name      = "apatsev"
   folder_id = "xxxx"
   folder_roles = [
-    "editor",
     "container-registry.images.puller",
-    "k8s.tunnelClusters.agent"
+    "k8s.clusters.agent",
+    "k8s.tunnelClusters.agent",
+    "load-balancer.admin",
+    "logging.writer",
+    "vpc.publicAdmin",
+    "vpc.user",
   ]
   cloud_roles              = []
   enable_static_access_key = false
