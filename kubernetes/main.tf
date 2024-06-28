@@ -38,4 +38,15 @@ module "kube" {
     }
   ]
 
+  node_groups = {
+    "default" = {
+      nat    = true
+      cores  = 2
+      memory = 8
+      fixed_scale = {
+        size = 3
+      }
+    }
+  }
+
 }
