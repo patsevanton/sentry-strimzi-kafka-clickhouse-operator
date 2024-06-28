@@ -1,44 +1,134 @@
-apiVersion: "clickhouse.altinity.com/v1"
-kind: "ClickHouseInstallation"
+---
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
 metadata:
-  name: "template-pod"
-  finalizers:
-    - finalizer.clickhouseinstallation.altinity.com
+  name: sentry-clickhouse
+  namespace: sentry
 spec:
+  reconciling:
+    policy: wait
   defaults:
+    distributedDDL:
+      profile: default
     templates:
-      podTemplate: pod-template
+      dataVolumeClaimTemplate: default
+      podTemplate: clickhouse
+      serviceTemplate: internal
   configuration:
     settings:
-      http_port: 8124
-      tcp_port: 9001
-      interserver_http_port: 9010
+      timezone: UTC
+      prometheus/endpoint: /metrics
+      prometheus/port: 9363
+      prometheus/metrics: true
+      prometheus/events: true
+      prometheus/asynchronous_metrics: true
+      prometheus/status_info: true
+      logger/level: warning
+      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
+      clickhouse/distributed_ddl/profile: default
+      clickhouse/distributed_ddl/pool_size: 8
+    users:
+      sentry/profile: default
+      sentry/networks/ip:
+        - "127.0.0.1"
+        - "10.0.0.0/8"
+      sentry/password_sha256_hex: "bcdf7c1cb92ae30641cb95bf89cfd941678e1b84c4dbeaf0424926f0e13fabc2"
+      sentry/quota: default
+
+    profiles:
+      readonly/readonly: "2"
+      default/distributed_product_mode: "allow"
+    zookeeper:
+      nodes:
+        - host: zookeeper.zookeeper.svc.cluster.local
+          port: 2181
     clusters:
-      - name: "temp-pod"
+      - name: sharded  # chi-sentry-sharded-<x>-<x>-<x>
+        secret:
+          auto: "True"
         layout:
-          shardsCount: 1
-          replicasCount: 1
+          shardsCount: 3
+
   templates:
-    podTemplates:
-      - name: pod-template
-        metadata:
-          labels:
-            custom.label: "label.value"
-          annotations:
-            custom.annotation: "annotation.value"
+    serviceTemplates:
+      - name: internal
+        generateName: "ch-{chi}"
         spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+          type: ClusterIP
+    volumeClaimTemplates:
+      - name: default
+        reclaimPolicy: Retain
+        spec:
+          storageClassName: yc-network-ssd
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 500Gi
+    podTemplates:
+      - name: clickhouse
+        podDistribution:
+          - type: ReplicaAntiAffinity
+            topologyKey: "topology.kubernetes.io/zone"
+          - type: ShardAntiAffinity
+            topologyKey: "topology.kubernetes.io/zone"
+          - type: MaxNumberPerNode
+            number: 1
+            topologyKey: "kubernetes.io/hostname"
+        spec:
+          nodeSelector:
+            role: sentry
+          tolerations:
+            - key: role
+              value: sentry
+              operator: Equal
+              effect: NoSchedule
+          terminationGracePeriodSeconds: 3600
           containers:
             - name: clickhouse
-              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.8
-              # Container has explicitly specified resource requests
+              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - "/bin/bash"
+                      - "-c"
+                      - |
+                        while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
+                          sleep 1
+                        done
               resources:
                 requests:
-                  cpu: "1000m"
-              # Container has explicitly specified ports
+                  memory: 4Gi
+                  cpu: 1
+                limits:
+                  memory: 4Gi
+                  cpu: 1
               ports:
-                - name: http
-                  containerPort: 8124
-                - name: tcp
-                  containerPort: 9001
-                - name: interserver
-                  containerPort: 9010
+                - name: "metrics"
+                  containerPort: 9363
+            - name: clickhouse-exporter
+              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
+              env:
+                - name: CLICKHOUSE_USER
+                  value: sentry
+                - name: CLICKHOUSE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: sentry-creds
+                      key: CLICKHOUSE_PASSWORD
+              resources:
+                limits:
+                  memory: 256Mi
+                  cpu: 200m
+                requests:
+                  memory: 128Mi
+                  cpu: 100m
+              ports:
+                - name: ch-metrics
+                  containerPort: 9116

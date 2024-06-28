@@ -41,6 +41,12 @@ cd ..
 ```shell
 helmwave up --build
 ```
+
+# namespace sentry
+```shell
+kubectl create namespace sentry
+```
+
 # clickhouse operator
 ```shell
 wget https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.22.1/deploy/operator/clickhouse-operator-install-bundle.yaml
