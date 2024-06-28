@@ -1,7 +1,7 @@
 module "iam_accounts" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account"
 
-  name      = "apatsev"
+  name      = "iam"
   folder_id = "xxxx"
   folder_roles = [
     "container-registry.images.puller",
@@ -39,12 +39,23 @@ module "kube" {
   ]
 
   node_groups = {
-    "default" = {
+    "fixed_scale" = {
       nat    = true
       cores  = 2
-      memory = 8
+      memory = 4
       fixed_scale = {
-        size = 3
+        size = 1
+      }
+    }
+
+    "auto_scale" = {
+      nat    = true
+      memory = 2
+      cores  = 8
+      auto_scale = {
+        min     = 1
+        max     = 5
+        initial = 1
       }
     }
   }
