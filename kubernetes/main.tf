@@ -39,7 +39,7 @@ module "kube" {
   ]
 
   node_groups = {
-    "fixed_scale" = {
+    "fixed-scale" = {
       nat    = true
       cores  = 2
       memory = 4
@@ -48,10 +48,10 @@ module "kube" {
       }
     }
 
-    "auto_scale" = {
+    "auto-scale" = {
       nat    = true
-      memory = 2
-      cores  = 8
+      cores  = 2
+      memory = 8
       auto_scale = {
         min     = 1
         max     = 5
