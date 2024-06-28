@@ -1,9 +1,15 @@
 module "redis" {
-  source  = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-redis.git?ref=init"
+  source  = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-redis.git"
 
   folder_id   = "xxxx"
   name        = "apatsev-redis"
-  subnet_id   = "xxxxx"
-  network_id  = "xxxx"
+  network_id  = "xxxxx"
   password    = "secretpassword"
+  zone        = "ru-central1-a"
+  hosts = {
+    host1 = {
+      zone      = "ru-central1-a"
+      subnet_id = "xxxxx"
+    }
+  }
 }
