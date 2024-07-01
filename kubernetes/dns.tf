@@ -1,11 +1,3 @@
-module "address" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-address.git"
-
-  ip_address_name = "apatsev-pip"
-  folder_id = "xxxx"
-  zone = "ru-central1-a"
-}
-
 module "dns-zone" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone"
 
@@ -26,6 +18,6 @@ module "dns-recordset" {
   type      = "A"
   ttl       = 200
   data      = [
-    module.address.id
+    module.address.external_ipv4_address
   ]
 }
