@@ -2,52 +2,52 @@
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
 metadata:
-  name: sentry-clickhouse
-  namespace: sentry
+  name: sentry-clickhouse  # Имя установки ClickHouse для Sentry
+  namespace: sentry  # Пространство имен, в котором будет развернута установка
 spec:
   reconciling:
-    policy: wait
+    policy: wait  # Политика реконсиляции: ожидание завершения всех задач перед продолжением
   defaults:
     distributedDDL:
-      profile: default
+      profile: default  # Профиль для распределенных DDL операций
     templates:
-      dataVolumeClaimTemplate: default
-      podTemplate: clickhouse
-      serviceTemplate: internal
+      dataVolumeClaimTemplate: default  # Шаблон для запроса на выделение объема данных
+      podTemplate: clickhouse  # Шаблон для конфигурации пода
+      serviceTemplate: internal  # Шаблон для конфигурации сервиса
   configuration:
     settings:
-      timezone: UTC
-      prometheus/endpoint: /metrics
-      prometheus/port: 9363
-      prometheus/metrics: true
-      prometheus/events: true
-      prometheus/asynchronous_metrics: true
-      prometheus/status_info: true
-      logger/level: warning
-      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
-      clickhouse/distributed_ddl/profile: default
-      clickhouse/distributed_ddl/pool_size: 8
+      timezone: UTC  # Временная зона по умолчанию
+      prometheus/endpoint: /metrics  # Конечная точка для сбора метрик Prometheus
+      prometheus/port: 9363  # Порт для сбора метрик Prometheus
+      prometheus/metrics: true  # Включение сбора метрик Prometheus
+      prometheus/events: true  # Включение сбора событий Prometheus
+      prometheus/asynchronous_metrics: true  # Включение сбора асинхронных метрик Prometheus
+      prometheus/status_info: true  # Включение сбора информации о статусе Prometheus
+      logger/level: warning  # Уровень логирования
+      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl  # Путь для распределенных DDL операций
+      clickhouse/distributed_ddl/profile: default  # Профиль для распределенных DDL операций
+      clickhouse/distributed_ddl/pool_size: 8  # Размер пула для распределенных DDL операций
     users:
-      sentry/profile: default
+      sentry/profile: default  # Профиль пользователя Sentry
       sentry/networks/ip:
-        - "127.0.0.1"
-        - "10.0.0.0/8"
-      sentry/password_sha256_hex: "bcdf7c1cb92ae30641cb95bf89cfd941678e1b84c4dbeaf0424926f0e13fabc2"
-      sentry/quota: default
+        - "127.0.0.1"  # Локальный IP-адрес
+        - "10.0.0.0/8"  # Сеть IP-адресов
+      sentry/password_sha256_hex: "xxxxx"  # Хеш пароля пользователя Sentry
+      sentry/quota: default  # Квота пользователя Sentry
 
     profiles:
-      readonly/readonly: "2"
-      default/distributed_product_mode: "allow"
+      readonly/readonly: "2"  # Профиль только для чтения
+      default/distributed_product_mode: "allow"  # Режим распределенных продуктов
     zookeeper:
       nodes:
-        - host: zookeeper.zookeeper.svc.cluster.local
-          port: 2181
+        - host: zookeeper.zookeeper.svc.cluster.local  # Хост ZooKeeper
+          port: 2181  # Порт ZooKeeper
     clusters:
-      - name: sharded  # chi-sentry-sharded-<x>-<x>-<x>
+      - name: sharded  # Имя кластера: chi-sentry-sharded-<x>-<x>-<x>
         secret:
-          auto: "True"
+          auto: "True"  # Автоматическое управление секретами
         layout:
-          shardsCount: 3
+          shardsCount: 3  # Количество шардов в кластере
 
   templates:
     serviceTemplates:
