@@ -51,47 +51,47 @@ spec:
 
   templates:
     serviceTemplates:
-      - name: internal
-        generateName: "ch-{chi}"
+      - name: internal  # Имя шаблона сервиса
+        generateName: "ch-{chi}"  # Генерируемое имя сервиса
         spec:
           ports:
-            - name: http
+            - name: http  # Порт для HTTP
               port: 8123
-            - name: tcp
+            - name: tcp  # Порт для TCP
               port: 9000
-          type: ClusterIP
+          type: ClusterIP  # Тип сервиса: ClusterIP
     volumeClaimTemplates:
-      - name: default
-        reclaimPolicy: Retain
+      - name: default  # Имя шаблона запроса на выделение объема
+        reclaimPolicy: Retain  # Политика восстановления: сохранение данных после удаления
         spec:
-          storageClassName: yc-network-ssd
+          storageClassName: yc-network-ssd  # Класс хранилища
           accessModes:
-            - ReadWriteOnce
+            - ReadWriteOnce  # Режим доступа: чтение-запись одним пользователем
           resources:
             requests:
-              storage: 500Gi
+              storage: 500Gi  # Запрошенный объем хранилища
     podTemplates:
-      - name: clickhouse
+      - name: clickhouse  # Имя шаблона пода
         podDistribution:
-          - type: ReplicaAntiAffinity
+          - type: ReplicaAntiAffinity  # Анти-аффинити по репликам
             topologyKey: "topology.kubernetes.io/zone"
-          - type: ShardAntiAffinity
+          - type: ShardAntiAffinity  # Анти-аффинити по шардам
             topologyKey: "topology.kubernetes.io/zone"
-          - type: MaxNumberPerNode
+          - type: MaxNumberPerNode  # Максимальное количество подов на узле
             number: 1
             topologyKey: "kubernetes.io/hostname"
         spec:
           nodeSelector:
-            role: sentry
+            role: sentry  # Селектор узлов по роли
           tolerations:
-            - key: role
+            - key: role  # Толерантность к узлам с определенной ролью
               value: sentry
               operator: Equal
               effect: NoSchedule
-          terminationGracePeriodSeconds: 3600
+          terminationGracePeriodSeconds: 3600  # Время ожидания перед принудительным завершением
           containers:
-            - name: clickhouse
-              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
+            - name: clickhouse  # Контейнер ClickHouse
+              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21  # Имя образа
               lifecycle:
                 preStop:
                   exec:
@@ -101,34 +101,34 @@ spec:
                       - |
                         while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
                           sleep 1
-                        done
+                        done  # Команда выполняемая перед остановкой контейнера
               resources:
                 requests:
-                  memory: 4Gi
-                  cpu: 1
+                  memory: 4Gi  # Запрошенная память
+                  cpu: 1  # Запрошенные CPU
                 limits:
-                  memory: 4Gi
-                  cpu: 1
+                  memory: 4Gi  # Лимит памяти
+                  cpu: 1  # Лимит CPU
               ports:
-                - name: "metrics"
+                - name: "metrics"  # Порт для метрик
                   containerPort: 9363
-            - name: clickhouse-exporter
-              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
+            - name: clickhouse-exporter  # Контейнер экспортера метрик ClickHouse
+              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest  # Имя образа
               env:
-                - name: CLICKHOUSE_USER
+                - name: CLICKHOUSE_USER  # Переменная окружения для пользователя
                   value: sentry
-                - name: CLICKHOUSE_PASSWORD
+                - name: CLICKHOUSE_PASSWORD  # Переменная окружения для пароля
                   valueFrom:
                     secretKeyRef:
-                      name: sentry-creds
-                      key: CLICKHOUSE_PASSWORD
+                      name: sentry-creds  # Имя секрета
+                      key: CLICKHOUSE_PASSWORD  # Ключ в секрете
               resources:
                 limits:
-                  memory: 256Mi
-                  cpu: 200m
+                  memory: 256Mi  # Лимит памяти
+                  cpu: 200m  # Лимит CPU
                 requests:
-                  memory: 128Mi
-                  cpu: 100m
+                  memory: 128Mi  # Запрошенная память
+                  cpu: 100m  # Запрошенные CPU
               ports:
-                - name: ch-metrics
+                - name: ch-metrics  # Порт для метрик экспортера
                   containerPort: 9116
