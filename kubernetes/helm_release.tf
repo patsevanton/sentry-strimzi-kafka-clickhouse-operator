@@ -1,8 +1,7 @@
 provider "helm" {
   kubernetes {
-    host                   = yandex_kubernetes_cluster.zonal_k8s_cluster.master[0].external_v4_endpoint
-    host                   = module.kube
-    cluster_ca_certificate = yandex_kubernetes_cluster.zonal_k8s_cluster.master[0].cluster_ca_certificate
+    host                   = module.kube.external_v4_endpoint
+    cluster_ca_certificate = module.kube.cluster_ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["k8s", "create-token"]
