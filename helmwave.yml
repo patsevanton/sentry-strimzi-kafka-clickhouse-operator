@@ -4,6 +4,10 @@ version: 0.35.0
 registries:
   - host: registry-1.docker.io
 
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+
 releases:
   - name: zookeeper
     namespace: zookeeper
@@ -17,3 +21,11 @@ releases:
       version: 13.4.5
     values:
       - values-zookeeper.yaml
+
+  - name: prometheus
+    namespace: monitoring
+    create_namespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    version: 61.1.0
+    values:
+      - values-kube-prometheus-stack.yaml

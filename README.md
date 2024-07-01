@@ -1,12 +1,6 @@
 # sentry-strimzi-kafka-clickhouse-operator
 
 # Kubernetes
-В конфиге Kubernetes использовать такую роль:
-```
-  folder_roles = [
-    "admin",
-  ]
-```
 ```shell
 cd kubernetes
 terraform init
