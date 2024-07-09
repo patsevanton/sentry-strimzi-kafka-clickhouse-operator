@@ -50,3 +50,7 @@ kubectl apply -f clickhouse-operator-install-bundle.yaml
 
 # Clickhouse
 Из примеров https://github.com/Altinity/clickhouse-operator/tree/master/docs/chi-examples сделать конфиг для clickhouse
+Затем применить его
+```shell
+kubectl apply -f kind-ClickHouseInstallation.yaml
+```
