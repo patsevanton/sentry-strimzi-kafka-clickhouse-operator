@@ -5,7 +5,7 @@ module "dns-zone" {
   name        = "my-private-zone"
 
   zone             = "apatsev.org.ru."
-  is_public        = false
+  is_public        = true
   private_networks = ["xxxx"]
 }
 

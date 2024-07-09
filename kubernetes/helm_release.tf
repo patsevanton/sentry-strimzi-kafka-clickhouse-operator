@@ -15,4 +15,12 @@ resource "helm_release" "ingress_nginx" {
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
   version    = "4.10.1"
+  namespace  = "ingress-nginx"
+  create_namespace = true
+  depends_on = [ module.kube ]
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = module.address.external_ipv4_address
+  }
+
 }
