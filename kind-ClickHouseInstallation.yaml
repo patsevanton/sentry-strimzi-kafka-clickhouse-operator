@@ -32,7 +32,7 @@ spec:
       sentry/networks/ip:
         - "127.0.0.1"  # Локальный IP-адрес
         - "10.0.0.0/8"  # Сеть IP-адресов
-      sentry/password_sha256_hex: "xxxxx"  # Хеш пароля пользователя Sentry
+      sentry/password_sha256_hex: "5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b"  # Хеш пароля пользователя Sentry
       sentry/quota: default  # Квота пользователя Sentry
 
     profiles:

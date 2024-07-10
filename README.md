@@ -48,6 +48,14 @@ sed -i 's/image: /image: dockerhub.timeweb.cloud\//g' clickhouse-operator-instal
 kubectl apply -f clickhouse-operator-install-bundle.yaml
 ```
 
+# Пароль Clickhouse
+Придумываем пароль и получаем от него sha256 хеш
+```
+printf 'sentry-password' | sha256sum
+```
+Полученный хеш вставляем в поле "sentry/password_sha256_hex"
+
+
 # Clickhouse
 Из примеров https://github.com/Altinity/clickhouse-operator/tree/master/docs/chi-examples сделать конфиг для clickhouse
 Затем применить его
