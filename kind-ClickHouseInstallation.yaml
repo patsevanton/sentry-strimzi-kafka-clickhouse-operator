@@ -69,17 +69,9 @@ spec:
             - ReadWriteOnce  # Режим доступа: чтение-запись одним пользователем
           resources:
             requests:
-              storage: 100Gi  # Запрошенный объем хранилища
+              storage: 50Gi  # Запрошенный объем хранилища clickhouse
     podTemplates:
       - name: clickhouse  # Имя шаблона пода
-#        podDistribution:
-#          - type: ReplicaAntiAffinity  # Анти-аффинити по репликам
-#            topologyKey: "topology.kubernetes.io/zone"
-#          - type: ShardAntiAffinity  # Анти-аффинити по шардам
-#            topologyKey: "topology.kubernetes.io/zone"
-#          - type: MaxNumberPerNode  # Максимальное количество подов на узле
-#            number: 1
-#            topologyKey: "kubernetes.io/hostname"
         spec:
           terminationGracePeriodSeconds: 3600  # Время ожидания перед принудительным завершением
           containers:
