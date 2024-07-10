@@ -2,11 +2,11 @@
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
 metadata:
-  name: sentry-clickhouse  # Имя установки ClickHouse для Sentry
-  namespace: sentry  # Пространство имен, в котором будет развернута установка
+  name: sentry-clickhouse
+  namespace: sentry
 spec:
   reconciling:
-    policy: wait  # Политика реконсиляции: ожидание завершения всех задач перед продолжением
+    policy: wait
   defaults:
     distributedDDL:
       profile: default  # Профиль для распределенных DDL операций
@@ -30,8 +30,8 @@ spec:
     users:
       sentry/profile: default  # Профиль пользователя Sentry
       sentry/networks/ip:
-        - "127.0.0.1"  # Локальный IP-адрес
-        - "10.0.0.0/8"  # Сеть IP-адресов
+        - "127.0.0.1"
+        - "10.0.0.0/8"
       sentry/password_sha256_hex: "5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b"  # Хеш пароля пользователя Sentry
       sentry/quota: default  # Квота пользователя Sentry
 
@@ -40,8 +40,8 @@ spec:
       default/distributed_product_mode: "allow"  # Режим распределенных продуктов
     zookeeper:
       nodes:
-        - host: zookeeper.zookeeper.svc.cluster.local  # Хост ZooKeeper
-          port: 2181  # Порт ZooKeeper
+        - host: zookeeper.zookeeper.svc.cluster.local
+          port: 2181
     clusters:
       - name: sharded  # Имя кластера: chi-sentry-sharded-<x>-<x>-<x>
         secret:
@@ -51,32 +51,32 @@ spec:
 
   templates:
     serviceTemplates:
-      - name: internal  # Имя шаблона сервиса
+      - name: internal
         generateName: "ch-{chi}"  # Генерируемое имя сервиса
         spec:
           ports:
-            - name: http  # Порт для HTTP
+            - name: http
               port: 8123
-            - name: tcp  # Порт для TCP
+            - name: tcp
               port: 9000
-          type: ClusterIP  # Тип сервиса: ClusterIP
+          type: ClusterIP
     volumeClaimTemplates:
-      - name: default  # Имя шаблона запроса на выделение объема
+      - name: default
         reclaimPolicy: Retain  # Политика восстановления: сохранение данных после удаления
         spec:
-          storageClassName: yc-network-ssd  # Класс хранилища
+          storageClassName: yc-network-ssd
           accessModes:
-            - ReadWriteOnce  # Режим доступа: чтение-запись одним пользователем
+            - ReadWriteOnce
           resources:
             requests:
               storage: 50Gi  # Запрошенный объем хранилища clickhouse
     podTemplates:
-      - name: clickhouse  # Имя шаблона пода
+      - name: clickhouse
         spec:
           terminationGracePeriodSeconds: 3600  # Время ожидания перед принудительным завершением
           containers:
-            - name: clickhouse  # Контейнер ClickHouse
-              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21  # Имя образа
+            - name: clickhouse
+              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
               lifecycle:
                 preStop:
                   exec:
@@ -89,28 +89,28 @@ spec:
                         done  # Команда выполняемая перед остановкой контейнера
               resources:
                 requests:
-                  memory: 4Gi  # Запрошенная память
-                  cpu: 1  # Запрошенные CPU
+                  memory: 4Gi
+                  cpu: 1
                 limits:
-                  memory: 4Gi  # Лимит памяти
-                  cpu: 1  # Лимит CPU
+                  memory: 4Gi
+                  cpu: 1
               ports:
-                - name: "metrics"  # Порт для метрик
+                - name: "metrics"
                   containerPort: 9363
-            - name: clickhouse-exporter  # Контейнер экспортера метрик ClickHouse
-              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest  # Имя образа
+            - name: clickhouse-exporter
+              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
               env:
-                - name: CLICKHOUSE_USER  # Переменная окружения для пользователя
+                - name: CLICKHOUSE_USER
                   value: sentry
-                - name: CLICKHOUSE_PASSWORD  # Переменная окружения для пользователя
+                - name: CLICKHOUSE_PASSWORD
                   value: sentry-password
               resources:
                 limits:
-                  memory: 256Mi  # Лимит памяти
-                  cpu: 200m  # Лимит CPU
+                  memory: 256Mi
+                  cpu: 200m
                 requests:
-                  memory: 128Mi  # Запрошенная память
-                  cpu: 100m  # Запрошенные CPU
+                  memory: 128M
+                  cpu: 100m
               ports:
-                - name: ch-metrics  # Порт для метрик экспортера
+                - name: ch-metrics
                   containerPort: 9116
