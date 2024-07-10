@@ -62,3 +62,5 @@ printf 'sentry-password' | sha256sum
 ```shell
 kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
+
+Импортируем дашборд https://grafana.com/grafana/dashboards/12163-altinity-clickhouse-operator-dashboard/
