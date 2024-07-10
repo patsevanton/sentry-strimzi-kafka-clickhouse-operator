@@ -1,0 +1,411 @@
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"clickhouse.altinity.com/v1","kind":"ClickHouseInstallation","metadata":{"annotations":{},"name":"sentry-clickhouse","namespace":"sentry"},"spec":{"configuration":{"clusters":[{"layout":{"shardsCount":3},"name":"sharded","secret":{"auto":"True"}}],"profiles":{"default/distributed_product_mode":"allow","readonly/readonly":"2"},"settings":{"clickhouse/distributed_ddl/path":"/clickhouse/task_queue/ddl","clickhouse/distributed_ddl/pool_size":8,"clickhouse/distributed_ddl/profile":"default","logger/level":"warning","prometheus/asynchronous_metrics":true,"prometheus/endpoint":"/metrics","prometheus/events":true,"prometheus/metrics":true,"prometheus/port":9363,"prometheus/status_info":true,"timezone":"UTC"},"users":{"sentry/networks/ip":["127.0.0.1","10.0.0.0/8"],"sentry/password_sha256_hex":"5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b","sentry/profile":"default","sentry/quota":"default"},"zookeeper":{"nodes":[{"host":"zookeeper.zookeeper.svc.cluster.local","port":2181}]}},"defaults":{"distributedDDL":{"profile":"default"},"templates":{"dataVolumeClaimTemplate":"default","podTemplate":"clickhouse","serviceTemplate":"internal"}},"reconciling":{"policy":"wait"},"templates":{"podTemplates":[{"name":"clickhouse","spec":{"containers":[{"image":"dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21","lifecycle":{"preStop":{"exec":{"command":["/bin/bash","-c","while [ \"$(clickhouse-client --query 'SHOW PROCESSLIST')\" ]; do\n  sleep 1\ndone  # Команда выполняемая перед остановкой контейнера\n"]}}},"name":"clickhouse","ports":[{"containerPort":9363,"name":"metrics"}],"resources":{"limits":{"cpu":1,"memory":"4Gi"},"requests":{"cpu":1,"memory":"4Gi"}}},{"env":[{"name":"CLICKHOUSE_USER","value":"sentry"},{"name":"CLICKHOUSE_PASSWORD","value":"sentry-password"}],"image":"dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest","name":"clickhouse-exporter","ports":[{"containerPort":9116,"name":"ch-metrics"}],"resources":{"limits":{"cpu":"200m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}}],"terminationGracePeriodSeconds":3600}}],"serviceTemplates":[{"generateName":"ch-{chi}","name":"internal","spec":{"ports":[{"name":"http","port":8123},{"name":"tcp","port":9000}],"type":"ClusterIP"}}],"volumeClaimTemplates":[{"name":"default","reclaimPolicy":"Retain","spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"50Gi"}},"storageClassName":"yc-network-ssd"}}]}}}
+  creationTimestamp: "2024-07-10T14:48:58Z"
+  finalizers:
+    - finalizer.clickhouseinstallation.altinity.com
+  generation: 1
+  name: sentry-clickhouse
+  namespace: sentry
+  resourceVersion: "6440"
+  uid: f6034d0a-fe01-4abe-a4fd-c17cc01fefcb
+spec:
+  configuration:
+    clusters:
+      - layout:
+          shardsCount: 3
+        name: sharded
+        secret:
+          auto: "True"
+    profiles:
+      default/distributed_product_mode: allow
+      readonly/readonly: "2"
+    settings:
+      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
+      clickhouse/distributed_ddl/pool_size: 8
+      clickhouse/distributed_ddl/profile: default
+      logger/level: warning
+      prometheus/asynchronous_metrics: true
+      prometheus/endpoint: /metrics
+      prometheus/events: true
+      prometheus/metrics: true
+      prometheus/port: 9363
+      prometheus/status_info: true
+      timezone: UTC
+    users:
+      sentry/networks/ip:
+        - 127.0.0.1
+        - 10.0.0.0/8
+      sentry/password_sha256_hex: 5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b
+      sentry/profile: default
+      sentry/quota: default
+    zookeeper:
+      nodes:
+        - host: zookeeper.zookeeper.svc.cluster.local
+          port: 2181
+  defaults:
+    distributedDDL:
+      profile: default
+    templates:
+      dataVolumeClaimTemplate: default
+      podTemplate: clickhouse
+      serviceTemplate: internal
+  reconciling:
+    policy: wait
+  templates:
+    podTemplates:
+      - name: clickhouse
+        spec:
+          containers:
+            - image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - /bin/bash
+                      - -c
+                      - |
+                        while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
+                          sleep 1
+                        done  # Команда выполняемая перед остановкой контейнера
+              name: clickhouse
+              ports:
+                - containerPort: 9363
+                  name: metrics
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 4Gi
+                requests:
+                  cpu: 1
+                  memory: 4Gi
+            - env:
+                - name: CLICKHOUSE_USER
+                  value: sentry
+                - name: CLICKHOUSE_PASSWORD
+                  value: sentry-password
+              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
+              name: clickhouse-exporter
+              ports:
+                - containerPort: 9116
+                  name: ch-metrics
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 256Mi
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+          terminationGracePeriodSeconds: 3600
+    serviceTemplates:
+      - generateName: ch-{chi}
+        name: internal
+        spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+          type: ClusterIP
+    volumeClaimTemplates:
+      - name: default
+        reclaimPolicy: Retain
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
+          storageClassName: yc-network-ssd
+status:
+  action: 'reconcile completed successfully, task id: 10675e96-f658-470a-95a0-9abc94b53234'
+  actions:
+    - '2024-07-10T14:50:35.067703189Z reconcile completed successfully, task id: 10675e96-f658-470a-95a0-9abc94b53234'
+    - '2024-07-10T14:48:58.534576844Z reconcile started, task id: 10675e96-f658-470a-95a0-9abc94b53234'
+  chop-commit: 6e7a769
+  chop-date: 2023-11-30T17:13:01
+  chop-ip: 10.112.129.6
+  chop-version: 0.22.1
+  clusters: 1
+  endpoint: ch-sentry-clickhouse.sentry.svc.cluster.local
+  fqdns:
+    - chi-sentry-clickhouse-sharded-0-0.sentry.svc.cluster.local
+    - chi-sentry-clickhouse-sharded-1-0.sentry.svc.cluster.local
+    - chi-sentry-clickhouse-sharded-2-0.sentry.svc.cluster.local
+  hosts: 3
+  normalizedCompleted:
+    apiVersion: clickhouse.altinity.com/v1
+    kind: ClickHouseInstallation
+    metadata:
+      creationTimestamp: "2024-07-10T14:48:58Z"
+      finalizers:
+        - finalizer.clickhouseinstallation.altinity.com
+      generation: 1
+      name: sentry-clickhouse
+      namespace: sentry
+      resourceVersion: "6423"
+      uid: f6034d0a-fe01-4abe-a4fd-c17cc01fefcb
+    spec:
+      configuration:
+        clusters:
+          - layout:
+              replicas:
+                - name: "0"
+                  shards:
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 0-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 1-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 2-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                  shardsCount: 3
+                  templates:
+                    dataVolumeClaimTemplate: default
+                    podTemplate: clickhouse
+                    serviceTemplate: internal
+              replicasCount: 1
+              shards:
+                - internalReplication: "False"
+                  name: "0"
+                  replicas:
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 0-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                  replicasCount: 1
+                  templates:
+                    dataVolumeClaimTemplate: default
+                    podTemplate: clickhouse
+                    serviceTemplate: internal
+                - internalReplication: "False"
+                  name: "1"
+                  replicas:
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 1-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                  replicasCount: 1
+                  templates:
+                    dataVolumeClaimTemplate: default
+                    podTemplate: clickhouse
+                    serviceTemplate: internal
+                - internalReplication: "False"
+                  name: "2"
+                  replicas:
+                    - httpPort: 8123
+                      interserverHTTPPort: 9009
+                      name: 2-0
+                      tcpPort: 9000
+                      templates:
+                        dataVolumeClaimTemplate: default
+                        podTemplate: clickhouse
+                        serviceTemplate: internal
+                  replicasCount: 1
+                  templates:
+                    dataVolumeClaimTemplate: default
+                    podTemplate: clickhouse
+                    serviceTemplate: internal
+              shardsCount: 3
+            name: sharded
+            schemaPolicy:
+              replica: All
+              shard: All
+            secret:
+              auto: "True"
+            templates:
+              dataVolumeClaimTemplate: default
+              podTemplate: clickhouse
+              serviceTemplate: internal
+            zookeeper:
+              nodes:
+                - host: zookeeper.zookeeper.svc.cluster.local
+                  port: 2181
+        profiles:
+          default/distributed_product_mode: allow
+          readonly/readonly: "2"
+        settings:
+          clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
+          clickhouse/distributed_ddl/pool_size: "8"
+          clickhouse/distributed_ddl/profile: default
+          logger/level: warning
+          prometheus/asynchronous_metrics: "true"
+          prometheus/endpoint: /metrics
+          prometheus/events: "true"
+          prometheus/metrics: "true"
+          prometheus/port: "9363"
+          prometheus/status_info: "true"
+          timezone: UTC
+        users:
+          clickhouse_operator/networks/ip:
+            - 10.112.129.6
+          clickhouse_operator/password_sha256_hex: 716b36073a90c6fe1d445ac1af85f4777c5b7a155cea359961826a030513e448
+          clickhouse_operator/profile: clickhouse_operator
+          default/networks/host_regexp: (chi-sentry-clickhouse-[^.]+\d+-\d+|clickhouse\-sentry-clickhouse)\.sentry\.svc\.cluster\.local$
+          default/networks/ip:
+            - ::1
+            - 127.0.0.1
+            - 10.112.129.11
+            - 10.112.130.7
+            - 10.112.128.12
+          default/profile: default
+          default/quota: default
+          sentry/networks/host_regexp: (chi-sentry-clickhouse-[^.]+\d+-\d+|clickhouse\-sentry-clickhouse)\.sentry\.svc\.cluster\.local$
+          sentry/networks/ip:
+            - ::1
+            - 127.0.0.1
+            - 10.0.0.0/8
+          sentry/password_sha256_hex: 5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b
+          sentry/profile: default
+          sentry/quota: default
+        zookeeper:
+          nodes:
+            - host: zookeeper.zookeeper.svc.cluster.local
+              port: 2181
+      defaults:
+        distributedDDL:
+          profile: default
+        replicasUseFQDN: "False"
+        storageManagement: {}
+        templates:
+          dataVolumeClaimTemplate: default
+          podTemplate: clickhouse
+          serviceTemplate: internal
+      reconciling:
+        cleanup:
+          reconcileFailedObjects:
+            configMap: Retain
+            pvc: Retain
+            service: Retain
+            statefulSet: Retain
+          unknownObjects:
+            configMap: Delete
+            pvc: Delete
+            service: Delete
+            statefulSet: Delete
+        policy: wait
+      stop: "False"
+      taskID: cb1b7a74-5bbc-4a85-8f26-b77699abe8ea
+      templates:
+        PodTemplatesIndex: {}
+        ServiceTemplatesIndex: {}
+        VolumeClaimTemplatesIndex: {}
+        podTemplates:
+          - metadata:
+              creationTimestamp: null
+            name: clickhouse
+            spec:
+              containers:
+                - image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
+                  lifecycle:
+                    preStop:
+                      exec:
+                        command:
+                          - /bin/bash
+                          - -c
+                          - |
+                            while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
+                              sleep 1
+                            done  # Команда выполняемая перед остановкой контейнера
+                  name: clickhouse
+                  ports:
+                    - containerPort: 9363
+                      name: metrics
+                  resources:
+                    limits:
+                      cpu: "1"
+                      memory: 4Gi
+                    requests:
+                      cpu: "1"
+                      memory: 4Gi
+                - env:
+                    - name: CLICKHOUSE_USER
+                      value: sentry
+                    - name: CLICKHOUSE_PASSWORD
+                      value: sentry-password
+                  image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
+                  name: clickhouse-exporter
+                  ports:
+                    - containerPort: 9116
+                      name: ch-metrics
+                  resources:
+                    limits:
+                      cpu: 200m
+                      memory: 256Mi
+                    requests:
+                      cpu: 100m
+                      memory: 128Mi
+              terminationGracePeriodSeconds: 3600
+            zone: {}
+        serviceTemplates:
+          - generateName: ch-{chi}
+            metadata:
+              creationTimestamp: null
+            name: internal
+            spec:
+              ports:
+                - name: http
+                  port: 8123
+                  targetPort: 0
+                - name: tcp
+                  port: 9000
+                  targetPort: 0
+              type: ClusterIP
+        volumeClaimTemplates:
+          - metadata:
+              creationTimestamp: null
+            name: default
+            reclaimPolicy: Retain
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 50Gi
+              storageClassName: yc-network-ssd
+      templating:
+        policy: manual
+      troubleshoot: "False"
+  pod-ips:
+    - 10.112.129.11
+    - 10.112.130.7
+    - 10.112.128.12
+  pods:
+    - chi-sentry-clickhouse-sharded-0-0-0
+    - chi-sentry-clickhouse-sharded-1-0-0
+    - chi-sentry-clickhouse-sharded-2-0-0
+  shards: 3
+  status: Completed
+  taskID: cb1b7a74-5bbc-4a85-8f26-b77699abe8ea
+  taskIDsCompleted:
+    - cb1b7a74-5bbc-4a85-8f26-b77699abe8ea
+  taskIDsStarted:
+    - 10675e96-f658-470a-95a0-9abc94b53234
