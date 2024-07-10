@@ -34,7 +34,7 @@ module "kube" {
   master_locations = [
     {
       zone      = "ru-central1-a"
-      subnet_id = "e9b7vm6aqjgsrpfbkhp8"
+      subnet_id = "xxxx"
     }
   ]
 
