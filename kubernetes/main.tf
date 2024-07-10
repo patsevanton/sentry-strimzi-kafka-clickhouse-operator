@@ -1,7 +1,7 @@
 module "iam_accounts" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account"
 
-  name      = "iam"
+  name      = "iam-yandex-kubernetes"
   folder_id = "xxxx"
   folder_roles = [
     "container-registry.images.puller",
@@ -34,7 +34,7 @@ module "kube" {
   master_locations = [
     {
       zone      = "ru-central1-a"
-      subnet_id = "xxxx"
+      subnet_id = "e9b7vm6aqjgsrpfbkhp8"
     }
   ]
 

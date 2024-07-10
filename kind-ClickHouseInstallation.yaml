@@ -69,25 +69,18 @@ spec:
             - ReadWriteOnce  # Режим доступа: чтение-запись одним пользователем
           resources:
             requests:
-              storage: 500Gi  # Запрошенный объем хранилища
+              storage: 100Gi  # Запрошенный объем хранилища
     podTemplates:
       - name: clickhouse  # Имя шаблона пода
-        podDistribution:
-          - type: ReplicaAntiAffinity  # Анти-аффинити по репликам
-            topologyKey: "topology.kubernetes.io/zone"
-          - type: ShardAntiAffinity  # Анти-аффинити по шардам
-            topologyKey: "topology.kubernetes.io/zone"
-          - type: MaxNumberPerNode  # Максимальное количество подов на узле
-            number: 1
-            topologyKey: "kubernetes.io/hostname"
+#        podDistribution:
+#          - type: ReplicaAntiAffinity  # Анти-аффинити по репликам
+#            topologyKey: "topology.kubernetes.io/zone"
+#          - type: ShardAntiAffinity  # Анти-аффинити по шардам
+#            topologyKey: "topology.kubernetes.io/zone"
+#          - type: MaxNumberPerNode  # Максимальное количество подов на узле
+#            number: 1
+#            topologyKey: "kubernetes.io/hostname"
         spec:
-#          nodeSelector:
-#            role: sentry  # Селектор узлов по роли
-#          tolerations:
-#            - key: role  # Толерантность к узлам с определенной ролью
-#              value: sentry
-#              operator: Equal
-#              effect: NoSchedule
           terminationGracePeriodSeconds: 3600  # Время ожидания перед принудительным завершением
           containers:
             - name: clickhouse  # Контейнер ClickHouse
