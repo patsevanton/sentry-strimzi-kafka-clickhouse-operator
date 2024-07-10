@@ -110,11 +110,8 @@ spec:
               env:
                 - name: CLICKHOUSE_USER  # Переменная окружения для пользователя
                   value: sentry
-                - name: CLICKHOUSE_PASSWORD  # Переменная окружения для пароля
-                  valueFrom:
-                    secretKeyRef:
-                      name: sentry-creds  # Имя секрета
-                      key: CLICKHOUSE_PASSWORD  # Ключ в секрете
+                - name: CLICKHOUSE_PASSWORD  # Переменная окружения для пользователя
+                  value: sentry-password
               resources:
                 limits:
                   memory: 256Mi  # Лимит памяти
