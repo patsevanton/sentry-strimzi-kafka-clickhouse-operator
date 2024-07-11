@@ -54,15 +54,22 @@ sed -i 's/image: /image: dockerhub.timeweb.cloud\//g' clickhouse-operator-instal
 kubectl apply -f clickhouse-operator-install-bundle.yaml
 ```
 
-# Пароль Clickhouse
+# kafka
+# Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
+```
+kubectl apply -f kafka-node-pool.yaml
+kubectl apply -f kafka.yaml
+kubectl apply -f kafka-topics.yaml
+```
+Ждем когда pod перейдут в состояние Running
+
+# Clickhouse
 Придумываем пароль и получаем от него sha256 хеш
 ```
 printf 'sentry-password' | sha256sum
 ```
 Полученный хеш вставляем в поле "sentry/password_sha256_hex"
 
-
-# Clickhouse
 Из примеров https://github.com/Altinity/clickhouse-operator/tree/master/docs/chi-examples сделать конфиг для clickhouse
 Затем применить его
 ```shell
@@ -72,17 +79,8 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 
 Импортируем дашборд https://grafana.com/grafana/dashboards/12163-altinity-clickhouse-operator-dashboard/
 
-# kafka
-# Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
-```
-kubectl apply -f kafka-node-pool.yaml
-kubectl apply -f kafka.yaml
-kubectl apply -f kafka-topics.yaml
-```
-Ждем когда pod перейдут в состояние Running
-Расскоментируем sentry в helmwave.yml
-
 # Установка sentry
+Расскоментируем sentry в helmwave.yml
 ```shell
 helmwave up --build
 ```
