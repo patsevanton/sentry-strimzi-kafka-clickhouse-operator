@@ -68,6 +68,7 @@ printf 'sentry-password' | sha256sum
 ```shell
 kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
+Ждем когда pod перейдут в состояние Running
 
 Импортируем дашборд https://grafana.com/grafana/dashboards/12163-altinity-clickhouse-operator-dashboard/
 
@@ -77,4 +78,11 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
+```
+Ждем когда pod перейдут в состояние Running
+Расскоментируем sentry в helmwave.yml
+
+# Установка sentry
+```shell
+helmwave up --build
 ```

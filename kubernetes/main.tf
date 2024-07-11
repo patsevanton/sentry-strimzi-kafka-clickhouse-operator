@@ -41,12 +41,12 @@ module "kube" {
   node_groups = {
     "auto-scale" = {
       nat    = true
-      cores  = 4
-      memory = 8
+      cores  = 6
+      memory = 12
       auto_scale = {
-        min     = 3
+        min     = 4
         max     = 8
-        initial = 3
+        initial = 4
       }
     }
   }

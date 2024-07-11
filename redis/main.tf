@@ -1,5 +1,5 @@
 module "redis" {
-  source  = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-redis.git?ref=password"
+  source  = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-redis.git"
 
   folder_id   = "xxxx"
   name        = "apatsev-redis"
