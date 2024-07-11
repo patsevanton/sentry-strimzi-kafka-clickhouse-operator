@@ -22,7 +22,7 @@ releases:
     max_history: 3
     chart:
       name: oci://registry-1.docker.io/bitnamicharts/zookeeper
-      version: 13.4.5
+      version: 10.2.5
     values:
       - values-zookeeper.yaml
 
@@ -34,7 +34,7 @@ releases:
     timeout: 5m
     max_history: 3
     chart: strimzi/strimzi-kafka-operator
-    version: 0.39.0
+    version: 0.41.0
     values:
       - values-strimzi-kafka-operator.yaml
 
