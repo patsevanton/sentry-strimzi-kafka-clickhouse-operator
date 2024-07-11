@@ -29,6 +29,7 @@ module "db" {
       owner      = "sentry"
       lc_collate = "ru_RU.UTF-8"
       lc_type    = "ru_RU.UTF-8"
+      extensions = ["citext"]
     }
   ]
 
