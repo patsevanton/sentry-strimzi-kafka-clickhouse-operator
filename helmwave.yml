@@ -38,21 +38,9 @@ releases:
     values:
       - values-strimzi-kafka-operator.yaml
 
-  - name: prometheus
-    namespace: monitoring
-    create_namespace: true
-    atomic: true
-    wait: true
-    chart: prometheus-community/kube-prometheus-stack
-    version: 61.1.0
-    values:
-      - values-kube-prometheus-stack.yaml
-
 #  - name: sentry
 #    namespace: sentry
 #    create_namespace: true
-#    atomic: true
-#    wait: true
 #    chart: sentry/sentry
 #    version: 23.1.0
 #    values:

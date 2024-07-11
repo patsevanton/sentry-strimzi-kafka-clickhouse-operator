@@ -14,7 +14,7 @@ module "dns-recordset" {
 
   folder_id = "xxxx"
   zone_id   = module.dns-zone.id
-  name      = "grafana.apatsev.org.ru."
+  name      = "sentry.apatsev.org.ru."
   type      = "A"
   ttl       = 200
   data      = [

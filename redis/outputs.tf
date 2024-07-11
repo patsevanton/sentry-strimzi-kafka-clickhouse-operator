@@ -1,7 +1,3 @@
-output "fqdn" {
-  value = module.redis.fqdn
-}
-
 output "password" {
   value     = module.redis.password
   sensitive = true

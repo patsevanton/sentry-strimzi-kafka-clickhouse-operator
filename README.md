@@ -14,7 +14,7 @@ cd postgresql
 terraform init
 terraform apply
 terraform output fqdn_database
-terraform output users_data
+terraform output owners_data
 cd ..
 ```
 
@@ -23,6 +23,8 @@ cd ..
 cd redis
 terraform init
 terraform apply
+terraform output fqdn_redis
+terraform output password
 cd ..
 ```
 
@@ -31,6 +33,7 @@ cd ..
 cd s3
 terraform init
 terraform apply
+terraform output access_key
 terraform output secret_key
 cd ..
 ```
@@ -77,10 +80,11 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
 Ждем когда pod перейдут в состояние Running
 
-Импортируем дашборд https://grafana.com/grafana/dashboards/12163-altinity-clickhouse-operator-dashboard/
-
 # Установка sentry
 Расскоментируем sentry в helmwave.yml
 ```shell
 helmwave up --build
 ```
+
+Ждем Clickhouse миграции в pod snuba-migrate
+ждем завершения PostgreSQL миграции в pod db-init-job
