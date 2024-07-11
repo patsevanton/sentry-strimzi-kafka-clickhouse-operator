@@ -65,3 +65,11 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
 
 Импортируем дашборд https://grafana.com/grafana/dashboards/12163-altinity-clickhouse-operator-dashboard/
+
+# kafka
+# Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
+```
+kubectl apply -f node-pool.yaml
+kubectl apply -f kafka.yaml
+kubectl apply -f kafka-topics.yaml
+```
