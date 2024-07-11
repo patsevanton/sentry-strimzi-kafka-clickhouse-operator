@@ -3,7 +3,13 @@ output "fqdn_database" {
   sensitive   = false
 }
 
-output "users_data" {
-  value       = module.db.users_data
+output "owners_data" {
+  description = "List of owners with passwords."
   sensitive   = true
+  value       = module.db.owners_data
+}
+
+output "databases" {
+  description = "List of databases names."
+  value       = module.db.databases
 }
