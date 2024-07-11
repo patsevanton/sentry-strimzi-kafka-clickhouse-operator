@@ -69,7 +69,7 @@ spec:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 50Gi
+              storage: 30Gi
     podTemplates:
       - name: clickhouse
         spec:

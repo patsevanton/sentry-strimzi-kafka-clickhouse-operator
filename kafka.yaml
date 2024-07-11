@@ -57,7 +57,7 @@ spec:
     storage:
       type: persistent-claim
       class: yc-network-ssd
-      size: 50Gi
+      size: 30Gi
   entityOperator:
     topicOperator: {}
     userOperator: {}
