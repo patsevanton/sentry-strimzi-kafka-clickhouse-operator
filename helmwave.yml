@@ -9,6 +9,8 @@ repositories:
     url: https://prometheus-community.github.io/helm-charts
   - name: strimzi
     url: https://strimzi.io/charts/
+  - name: sentry
+    url: https://sentry-kubernetes.github.io/charts
 
 releases:
   - name: zookeeper
