@@ -35,15 +35,7 @@ module "db" {
   owners = [
     {
       name       = "sentry"
-      conn_limit = 15
-    }
-  ]
-
-  users = [
-    {
-      name        = "sentry-user"
-      conn_limit  = 30
-      permissions = ["sentry"]
+      password   = "strongpassword"
     }
   ]
 }

@@ -680,3 +680,15 @@ spec:
   partitions: 10
   replicas: 2
   config: {}
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: sentry-kafka
+  name: outcomes-billing
+  namespace: sentry
+spec:
+  partitions: 10
+  replicas: 2
+  config: {}

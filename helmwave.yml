@@ -1,5 +1,5 @@
 project: "zookeeper"
-version: 0.38.0
+version: 0.35.0
 
 registries:
   - host: registry-1.docker.io
