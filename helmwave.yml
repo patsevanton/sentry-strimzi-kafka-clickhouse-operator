@@ -7,13 +7,15 @@ registries:
 repositories:
   - name: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
+  - name: strimzi
+    url: https://strimzi.io/charts/
 
 releases:
   - name: zookeeper
     namespace: zookeeper
     create_namespace: true
-    atomic: false
-    wait: false
+    atomic: true
+    wait: true
     timeout: 5m
     max_history: 3
     chart:
@@ -22,9 +24,23 @@ releases:
     values:
       - values-zookeeper.yaml
 
+  - name: strimzi
+    namespace: strimzi-kafka-operator
+    create_namespace: true
+    atomic: true
+    wait: true
+    timeout: 5m
+    max_history: 3
+    chart: strimzi/strimzi-kafka-operator
+    version: 0.39.0
+    values:
+      - values-strimzi-kafka-operator.yaml
+
   - name: prometheus
     namespace: monitoring
     create_namespace: true
+    atomic: true
+    wait: true
     chart: prometheus-community/kube-prometheus-stack
     version: 61.1.0
     values:

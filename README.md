@@ -32,13 +32,14 @@ terraform apply
 cd ..
 ```
 
-```shell
-helmwave up --build
-```
-
 # namespace sentry
 ```shell
 kubectl create namespace sentry
+```
+
+# Установка zookeeper, strimzi-kafka-operator
+```shell
+helmwave up --build
 ```
 
 # clickhouse operator

@@ -9,34 +9,34 @@ spec:
     policy: wait
   defaults:
     distributedDDL:
-      profile: default  # Профиль для распределенных DDL операций
+      profile: default
     templates:
-      dataVolumeClaimTemplate: default  # Шаблон для запроса на выделение объема данных
-      podTemplate: clickhouse  # Шаблон для конфигурации пода
-      serviceTemplate: internal  # Шаблон для конфигурации сервиса
+      dataVolumeClaimTemplate: default
+      podTemplate: clickhouse
+      serviceTemplate: internal
   configuration:
     settings:
-      timezone: UTC  # Временная зона по умолчанию
-      prometheus/endpoint: /metrics  # Конечная точка для сбора метрик Prometheus
-      prometheus/port: 9363  # Порт для сбора метрик Prometheus
-      prometheus/metrics: true  # Включение сбора метрик Prometheus
-      prometheus/events: true  # Включение сбора событий Prometheus
-      prometheus/asynchronous_metrics: true  # Включение сбора асинхронных метрик Prometheus
-      prometheus/status_info: true  # Включение сбора информации о статусе Prometheus
-      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl  # Путь для распределенных DDL операций
-      clickhouse/distributed_ddl/profile: default  # Профиль для распределенных DDL операций
-      clickhouse/distributed_ddl/pool_size: 8  # Размер пула для распределенных DDL операций
+      timezone: UTC
+      prometheus/endpoint: /metrics
+      prometheus/port: 9363
+      prometheus/metrics: true
+      prometheus/events: true
+      prometheus/asynchronous_metrics: true
+      prometheus/status_info: true
+      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
+      clickhouse/distributed_ddl/profile: default
+      clickhouse/distributed_ddl/pool_size: 8
     users:
-      sentry/profile: default  # Профиль пользователя Sentry
+      sentry/profile: default
       sentry/networks/ip:
         - "127.0.0.1"
         - "10.0.0.0/8"
-      sentry/password_sha256_hex: "5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b"  # Хеш пароля пользователя Sentry
-      sentry/quota: default  # Квота пользователя Sentry
+      sentry/password_sha256_hex: "5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b"  # Хеш пароля "sentry-password"
+      sentry/quota: default
 
     profiles:
       readonly/readonly: "2"  # Профиль только для чтения
-      default/distributed_product_mode: "allow"  # Режим распределенных продуктов
+      default/distributed_product_mode: "allow"
     zookeeper:
       nodes:
         - host: zookeeper.zookeeper.svc.cluster.local
@@ -68,24 +68,24 @@ spec:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 50Gi  # Запрошенный объем хранилища clickhouse
+              storage: 50Gi
     podTemplates:
       - name: clickhouse
         spec:
-          terminationGracePeriodSeconds: 3600  # Время ожидания перед принудительным завершением
+          terminationGracePeriodSeconds: 3600
           containers:
             - name: clickhouse
               image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
-              lifecycle:
-                preStop:
-                  exec:
-                    command:
-                      - "/bin/bash"
-                      - "-c"
-                      - |
-                        while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
-                          sleep 1
-                        done  # Команда выполняемая перед остановкой контейнера
+#              lifecycle:
+#                preStop:
+#                  exec:
+#                    command:
+#                      - "/bin/bash"
+#                      - "-c"
+#                      - |
+#                        while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
+#                          sleep 1
+#                        done
               resources:
                 requests:
                   memory: 4Gi
