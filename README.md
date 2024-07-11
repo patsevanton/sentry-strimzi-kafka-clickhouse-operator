@@ -74,7 +74,7 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 # kafka
 # Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
 ```
-kubectl apply -f node-pool.yaml
+kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
 ```
