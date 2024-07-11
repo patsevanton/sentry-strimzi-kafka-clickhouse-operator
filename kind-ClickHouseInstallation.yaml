@@ -17,12 +17,6 @@ spec:
   configuration:
     settings:
       timezone: UTC
-      prometheus/endpoint: /metrics
-      prometheus/port: 9363
-      prometheus/metrics: true
-      prometheus/events: true
-      prometheus/asynchronous_metrics: true
-      prometheus/status_info: true
       logger/level: error
       clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
       clickhouse/distributed_ddl/profile: default
@@ -77,16 +71,6 @@ spec:
           containers:
             - name: clickhouse
               image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
-#              lifecycle:
-#                preStop:
-#                  exec:
-#                    command:
-#                      - "/bin/bash"
-#                      - "-c"
-#                      - |
-#                        while [ "$(clickhouse-client --query 'SHOW PROCESSLIST')" ]; do
-#                          sleep 1
-#                        done
               resources:
                 requests:
                   memory: 4Gi
@@ -94,23 +78,3 @@ spec:
                 limits:
                   memory: 4Gi
                   cpu: 1
-              ports:
-                - name: "metrics"
-                  containerPort: 9363
-            - name: clickhouse-exporter
-              image: dockerhub.timeweb.cloud/f1yegor/clickhouse-exporter:latest
-              env:
-                - name: CLICKHOUSE_USER
-                  value: sentry
-                - name: CLICKHOUSE_PASSWORD
-                  value: sentry-password
-              resources:
-                limits:
-                  memory: 256Mi
-                  cpu: 200m
-                requests:
-                  memory: 128Mi
-                  cpu: 100m
-              ports:
-                - name: ch-metrics
-                  containerPort: 9116
