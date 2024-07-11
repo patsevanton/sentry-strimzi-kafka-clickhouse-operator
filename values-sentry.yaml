@@ -1,0 +1,174 @@
+asHook: false
+user:
+  password: "sentry-admin-password"
+  create: true
+  email: admin@sentry.apatsev.org.ru
+system:
+  url: "https://sentry.apatsev.org.ru"
+mail: {}
+images:
+  sentry:
+    tag: 24.5.0
+  snuba:
+    tag: 24.5.0
+  relay:
+    tag: 24.5.0
+  symbolicator:
+    tag: 24.5.0
+  vroom:
+    tag: 24.5.0
+config:
+  snubaSettingsPy: |
+    TOPIC_PARTITION_COUNTS = {
+      "cdc": 10,
+      "event-replacements": 10,
+      "events-subscription-results": 10,
+      "events": 10,
+      "generic-events": 10,
+      "generic-metrics-subscription-results": 10,
+      "group-attributes": 10,
+      "ingest-attachments": 10,
+      "ingest-events": 10,
+      "ingest-metrics": 10,
+      "ingest-monitors": 10,
+      "ingest-occurrences": 10,
+      "ingest-performance-metrics": 10,
+      "ingest-replay-events": 10,
+      "ingest-replay-recordings": 10,
+      "ingest-sessions": 10,
+      "ingest-transactions": 10,
+      "metrics-subscription-results": 10,
+      "outcomes": 10,
+      "processed-profiles": 10,
+      "profiles-call-tree": 10,
+      "profiles": 10,
+      "scheduled-subscriptions-events": 10,
+      "scheduled-subscriptions-generic-metrics-counters": 10,
+      "scheduled-subscriptions-generic-metrics-distributions": 10,
+      "scheduled-subscriptions-generic-metrics-sets": 10,
+      "scheduled-subscriptions-metrics": 10,
+      "scheduled-subscriptions-sessions": 10,
+      "scheduled-subscriptions-transactions": 10,
+      "sessions-subscription-results": 10,
+      "snuba-attribution": 10,
+      "snuba-commit-log": 10,
+      "snuba-dead-letter-generic-events": 10,
+      "snuba-dead-letter-generic-metrics": 10,
+      "snuba-dead-letter-group-attributes": 10,
+      "snuba-dead-letter-metrics-counters": 10,
+      "snuba-dead-letter-metrics-distributions": 10,
+      "snuba-dead-letter-metrics-sets": 10,
+      "snuba-dead-letter-metrics": 10,
+      "snuba-dead-letter-querylog": 10,
+      "snuba-dead-letter-replays": 10,
+      "snuba-dead-letter-sessions": 10,
+      "snuba-generic-events-commit-log": 10,
+      "snuba-generic-metrics-counters-commit-log": 10,
+      "snuba-generic-metrics-distributions-commit-log": 10,
+      "snuba-generic-metrics-sets-commit-log": 10,
+      "snuba-generic-metrics": 10,
+      "snuba-metrics-commit-log": 10,
+      "snuba-metrics": 10,
+      "snuba-queries": 10,
+      "snuba-sessions-commit-log": 10,
+      "snuba-spans": 10,
+      "snuba-transactions-commit-log": 10,
+      "transactions-subscription-results": 10,
+      "transactions": 10
+    }
+nginx:
+  enabled: false
+ingress:
+  enabled: true
+  hostname: sentry.apatsev.org.ru
+  ingressClassName: "nginx"
+  regexPathStyle: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 200m
+    # https://github.com/getsentry/self-hosted/issues/1927
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "16"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+filestore:
+  backend: "s3"
+  s3:
+    accessKey: "accessKey"
+    secretKey: "secretKey"
+    region_name: ru-central1
+    bucketName: sentry-bucket-apatsev-dev
+    endpointUrl: "https://storage.yandexcloud.net"
+    location: "sentry-dev-filestore" # Директория в бакете
+postgresql:
+  enabled: false
+externalPostgresql:
+  password: strongpassword
+  host: "c-id.rw.mdb.yandexcloud.net"
+  port: 6432
+  username: sentry
+  database: sentry
+rabbitmq:
+  ## If disabled, Redis will be used instead as the broker.
+  enabled: false
+redis:
+  enabled: false
+externalRedis:
+  password: secretpassword
+  host: "c-id.rw.mdb.yandexcloud.net"
+  port: 6379
+externalKafka:
+  - host: sentry-kafka-dual-roles-node-0.sentry-kafka-kafka-brokers.sentry.svc.cluster.local
+    port: 9092
+  - host: sentry-kafka-dual-roles-node-1.sentry-kafka-kafka-brokers.sentry.svc.cluster.local
+    port: 9092
+  - host: sentry-kafka-dual-roles-node-2.sentry-kafka-kafka-brokers.sentry.svc.cluster.local
+    port: 9092
+kafka:
+  enabled: false
+zookeeper:
+  enabled: false
+clickhouse:
+  enabled: false
+externalClickhouse:
+  password: sentry-password
+  host: ch-sentry-clickhouse.sentry.svc
+  database: default
+  httpPort: 8123
+  clusterName: sharded
+  tcpPort: 9000
+  username: sentry
+  singleNode: false
+sentry:
+  features:
+    enableProfiling: true
+  ingestReplayRecordings:
+    enabled: false
+  subscriptionConsumerEvents:
+    enabled: false
+  subscriptionConsumerGenericMetrics:
+    enabled: false
+  subscriptionConsumerMetrics:
+    enabled: false
+  subscriptionConsumerSessions:
+    enabled: false
+  subscriptionConsumerTransactions:
+    enabled: false
+  cleanup:
+    activeDeadlineSeconds: 1800
+    days: 14
+snuba:
+  replaysConsumer:
+    enabled: false
+  genericMetricsCountersConsumer:
+    enabled: false
+  genericMetricsDistributionsConsumer:
+    enabled: false
+  genericMetricsSetsConsumer:
+    enabled: false
+  metricsConsumer:
+    enabled: false
+symbolicator:
+  enabled: true
+hooks:
+  activeDeadlineSeconds: 600
+  snubaInit:
+    kafka:
+      enabled: false
