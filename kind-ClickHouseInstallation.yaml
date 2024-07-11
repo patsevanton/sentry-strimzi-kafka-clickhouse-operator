@@ -23,7 +23,6 @@ spec:
       prometheus/events: true  # Включение сбора событий Prometheus
       prometheus/asynchronous_metrics: true  # Включение сбора асинхронных метрик Prometheus
       prometheus/status_info: true  # Включение сбора информации о статусе Prometheus
-      logger/level: warning  # Уровень логирования
       clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl  # Путь для распределенных DDL операций
       clickhouse/distributed_ddl/profile: default  # Профиль для распределенных DDL операций
       clickhouse/distributed_ddl/pool_size: 8  # Размер пула для распределенных DDL операций
@@ -109,7 +108,7 @@ spec:
                   memory: 256Mi
                   cpu: 200m
                 requests:
-                  memory: 128M
+                  memory: 128Mi
                   cpu: 100m
               ports:
                 - name: ch-metrics
