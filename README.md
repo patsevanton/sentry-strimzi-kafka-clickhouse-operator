@@ -13,6 +13,8 @@ cd ..
 cd postgresql
 terraform init
 terraform apply
+terraform output fqdn_database
+terraform output users_data
 cd ..
 ```
 
@@ -29,8 +31,11 @@ cd ..
 cd s3
 terraform init
 terraform apply
+terraform output secret_key
 cd ..
 ```
+
+# Устанавливаем новое подключение к k8s
 
 # namespace sentry
 ```shell

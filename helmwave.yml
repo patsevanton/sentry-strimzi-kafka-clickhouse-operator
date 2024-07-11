@@ -47,3 +47,13 @@ releases:
     version: 61.1.0
     values:
       - values-kube-prometheus-stack.yaml
+
+#  - name: sentry
+#    namespace: sentry
+#    create_namespace: true
+#    atomic: true
+#    wait: true
+#    chart: sentry/sentry
+#    version: 23.1.0
+#    values:
+#      - values-sentry.yaml
