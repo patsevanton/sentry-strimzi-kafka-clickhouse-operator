@@ -1,6 +1,8 @@
 # Судя по этому issue https://github.com/sentry-kubernetes/charts/issues/901
-# sentry-kubernetes автоматически их не создает.
+# sentry во внешней kafka не создает topic.
 # Поэтому создаем их самостоятельно.
+# Конфигурации взяты из https://github.com/sentry-kubernetes/charts/blob/develop/charts/sentry/values.yaml#L1809
+# 10 partitions про запас.
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic

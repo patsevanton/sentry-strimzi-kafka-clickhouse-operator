@@ -13,12 +13,11 @@ repositories:
     url: https://sentry-kubernetes.github.io/charts
 
 releases:
-#  - name: altinity-clickhouse-operator
-#    namespace: kube-system
-#    timeout: 5m
-#    max_history: 3
-#    chart: altinity-clickhouse-operator/altinity-clickhouse-operator
-#    version: 0.22.1
+  - name: altinity-clickhouse-operator
+    namespace: kube-system
+    timeout: 5m
+    max_history: 3
+    chart: altinity-clickhouse-operator/altinity-clickhouse-operator
 
   - name: zookeeper
     namespace: zookeeper
@@ -44,11 +43,3 @@ releases:
     version: 0.41.0
     values:
       - values-strimzi-kafka-operator.yaml
-
-#  - name: sentry
-#    namespace: sentry
-#    create_namespace: true
-#    chart: sentry/sentry
-#    version: 23.1.0
-#    values:
-#      - values-sentry.yaml

@@ -26,7 +26,7 @@ spec:
       sentry/networks/ip:
         - "127.0.0.1"
         - "10.0.0.0/8"
-      sentry/password_sha256_hex: "5ebbe5018dc1952ba9f44c3a1be7a5befd4a3c0f003a730e64b8716647e8295b"  # Хеш пароля "sentry-password"
+      sentry/password_sha256_hex: "8afd9a754e80697b2b8d863116351019d27bf9e6f819414b2fd63432a55cd41f"  # Хеш пароля "sentry-clickhouse-password"
       sentry/quota: default
 
     profiles:
@@ -70,7 +70,7 @@ spec:
           terminationGracePeriodSeconds: 3600
           containers:
             - name: clickhouse
-              image: dockerhub.timeweb.cloud/clickhouse/clickhouse-server:23.3.8.21
+              image: clickhouse/clickhouse-server:23.3.8.21
               resources:
                 requests:
                   memory: 4Gi

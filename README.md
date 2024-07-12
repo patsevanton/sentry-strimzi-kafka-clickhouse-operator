@@ -53,12 +53,7 @@ kubectl create namespace sentry
 ```shell
 helmwave up --build
 ```
-
-# clickhouse operator
-```shell
-wget -N https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.23.6/deploy/operator/clickhouse-operator-install-bundle.yaml
-kubectl apply -f clickhouse-operator-install-bundle.yaml
-```
+Ждем когда pod перейдут в состояние Running
 
 # kafka
 # Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
@@ -67,12 +62,11 @@ kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
 ```
-Ждем когда pod перейдут в состояние Running
 
 # Clickhouse
 Придумываем пароль и получаем от него sha256 хеш
 ```
-printf 'sentry-password' | sha256sum
+printf 'sentry-clickhouse-password' | sha256sum
 ```
 Полученный хеш вставляем в поле "sentry/password_sha256_hex"
 
@@ -83,11 +77,13 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
 Ждем когда появятся 3 пода chi-sentry-clickhouse-sharded-x-0-0
 Ждем когда все pod перейдут в состояние Running
+Ждем когда все поды Clickhouse найдут друг друга и Clickhouse перестанет писать в логи ошибки ServerErrorHandler
 
 # Установка sentry
-Расскоментируем sentry в helmwave.yml
 ```shell
-helmwave up --build
+helm repo add sentry https://sentry-kubernetes.github.io/charts
+helm repo update
+helm install sentry -n sentry sentry/sentry --version 23.1.0 -f values-sentry.yaml
 ```
 
 Ждем Clickhouse миграции в pod snuba-migrate

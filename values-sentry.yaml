@@ -6,6 +6,19 @@ user:
 system:
   url: "http://sentry.apatsev.org.ru"
 mail: {}
+# Используется image 24.5.1
+# из-за https://github.com/getsentry/self-hosted/issues/3102
+#images:
+#  sentry:
+#    tag: 24.5.1
+#  snuba:
+#    tag: 24.5.1
+#  relay:
+#    tag: 24.5.1
+#  symbolicator:
+#    tag: 24.5.1
+#  vroom:
+#    tag: 24.5.1
 config:
   snubaSettingsPy: |
     TOPIC_PARTITION_COUNTS = {
@@ -85,7 +98,7 @@ filestore:
     region_name: ru-central1
     bucketName: sentry-bucket-apatsev-dev
     endpointUrl: "https://storage.yandexcloud.net"
-    location: "sentry-dev-filestore" # Директория в бакете
+    location: "sentry-debug-files" # Директория в бакете для https://docs.sentry.io/cli/dif/
 postgresql:
   enabled: false
 externalPostgresql:
@@ -117,7 +130,7 @@ zookeeper:
 clickhouse:
   enabled: false
 externalClickhouse:
-  password: sentry-password
+  password: sentry-clickhouse-password
   host: ch-sentry-clickhouse.sentry.svc
   database: default
   httpPort: 8123
