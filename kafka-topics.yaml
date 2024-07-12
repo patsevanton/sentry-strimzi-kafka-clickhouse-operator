@@ -1,3 +1,6 @@
+# Судя по этому issue https://github.com/sentry-kubernetes/charts/issues/901
+# sentry-kubernetes автоматически их не создает.
+# Поэтому создаем их самостоятельно.
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
