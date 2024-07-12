@@ -2,7 +2,7 @@ module "dns-zone" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone"
 
   folder_id = "xxxx"
-  name        = "my-private-zone"
+  name        = "apatsev-org-ru-zone"
 
   zone             = "apatsev.org.ru." # Точка в конце обязательна
   is_public        = true

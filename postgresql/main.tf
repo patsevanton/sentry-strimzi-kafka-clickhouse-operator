@@ -30,7 +30,7 @@ module "db" {
   owners = [
     {
       name       = "sentry"
-      password   = "strongpassword"
+      password   = "sentry-postgresql-password"
     }
   ]
 }

@@ -4,7 +4,7 @@ module "redis" {
   folder_id   = "xxxx"
   name        = "apatsev-redis"
   network_id  = "xxxxx"
-  password    = "secretpassword"
+  password    = "sentry-redis-password"
   zone        = "ru-central1-a"
   hosts = {
     host1 = {

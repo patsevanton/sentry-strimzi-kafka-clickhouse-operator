@@ -89,7 +89,7 @@ filestore:
 postgresql:
   enabled: false
 externalPostgresql:
-  password: strongpassword
+  password: sentry-postgresql-password
   host: "c-id.rw.mdb.yandexcloud.net"
   port: 6432
   username: sentry
@@ -100,7 +100,7 @@ rabbitmq:
 redis:
   enabled: false
 externalRedis:
-  password: secretpassword
+  password: sentry-redis-password
   host: "c-id.rw.mdb.yandexcloud.net"
   port: 6379
 externalKafka:
