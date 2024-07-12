@@ -8,9 +8,6 @@ metadata:
     strimzi.io/node-pools: enabled
     strimzi.io/kraft: enabled
 spec:
-  kafkaExporter:
-    topicRegex: ".*"
-    groupRegex: ".*"
   kafka:
     version: 3.7.0
     replicas: 3

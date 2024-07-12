@@ -5,12 +5,6 @@ module "db" {
   name        = "apatsev-postgresql"
   folder_id   = "xxxx"
 
-  maintenance_window = {
-    type = "WEEKLY"
-    day  = "SUN"
-    hour = "02"
-  }
-
   hosts_definition = [
     {
       zone             = "ru-central1-a"

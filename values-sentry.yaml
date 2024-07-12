@@ -4,19 +4,8 @@ user:
   create: true
   email: admin@sentry.apatsev.org.ru
 system:
-  url: "https://sentry.apatsev.org.ru"
+  url: "http://sentry.apatsev.org.ru"
 mail: {}
-images:
-  sentry:
-    tag: 24.5.0
-  snuba:
-    tag: 24.5.0
-  relay:
-    tag: 24.5.0
-  symbolicator:
-    tag: 24.5.0
-  vroom:
-    tag: 24.5.0
 config:
   snubaSettingsPy: |
     TOPIC_PARTITION_COUNTS = {

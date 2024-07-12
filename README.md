@@ -1,5 +1,9 @@
 # sentry-strimzi-kafka-clickhouse-operator
 
+# Регистриуем домен на reg.ru
+# Исправляем домен apatsev.org.ru на ваш домен везде в коде
+# Версии приложений меняем осторожно, иначе могут быть баги, например https://github.com/ClickHouse/ClickHouse/issues/53749
+
 # Kubernetes
 ```shell
 cd kubernetes
@@ -53,7 +57,6 @@ helmwave up --build
 # clickhouse operator
 ```shell
 wget https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.22.1/deploy/operator/clickhouse-operator-install-bundle.yaml
-sed -i 's/image: /image: dockerhub.timeweb.cloud\//g' clickhouse-operator-install-bundle.yaml
 kubectl apply -f clickhouse-operator-install-bundle.yaml
 ```
 
@@ -88,7 +91,15 @@ helmwave up --build
 
 Ждем Clickhouse миграции в pod snuba-migrate
 Ждем завершения PostgreSQL миграции в pod db-init-job
-Например, можно использовать stern для просмотра логов в namespace sentry
+Чтобы увидеть когда закончатся миграции, можно использовать stern для просмотра логов в namespace sentry
 ```
 stern -n sentry .
+```
+
+Входим в sentry по кредам, которые вы указали в этом коде
+```
+user:
+  password: "пароль"
+  create: true
+  email: логин-в-виде-email
 ```

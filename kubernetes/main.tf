@@ -45,7 +45,7 @@ module "kube" {
       memory = 12
       auto_scale = {
         min     = 4
-        max     = 8
+        max     = 6
         initial = 4
       }
     }

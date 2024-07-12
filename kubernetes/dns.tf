@@ -4,9 +4,9 @@ module "dns-zone" {
   folder_id = "xxxx"
   name        = "my-private-zone"
 
-  zone             = "apatsev.org.ru."
+  zone             = "apatsev.org.ru." # Точка в конце обязательна
   is_public        = true
-  private_networks = ["xxxx"]
+  private_networks = ["xxxx"] # network_id
 }
 
 module "dns-recordset" {
@@ -14,7 +14,7 @@ module "dns-recordset" {
 
   folder_id = "xxxx"
   zone_id   = module.dns-zone.id
-  name      = "sentry.apatsev.org.ru."
+  name      = "sentry.apatsev.org.ru." # Точка в конце обязательна
   type      = "A"
   ttl       = 200
   data      = [
