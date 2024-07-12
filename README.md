@@ -56,7 +56,7 @@ helmwave up --build
 
 # clickhouse operator
 ```shell
-wget https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.22.1/deploy/operator/clickhouse-operator-install-bundle.yaml
+wget -N https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.22.1/deploy/operator/clickhouse-operator-install-bundle.yaml
 kubectl apply -f clickhouse-operator-install-bundle.yaml
 ```
 
