@@ -87,4 +87,8 @@ helmwave up --build
 ```
 
 Ждем Clickhouse миграции в pod snuba-migrate
-ждем завершения PostgreSQL миграции в pod db-init-job
+Ждем завершения PostgreSQL миграции в pod db-init-job
+Например, можно использовать stern для просмотра логов в namespace sentry
+```
+stern -n sentry .
+```
