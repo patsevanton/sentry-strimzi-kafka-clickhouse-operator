@@ -5,14 +5,21 @@ registries:
   - host: registry-1.docker.io
 
 repositories:
-  - name: prometheus-community
-    url: https://prometheus-community.github.io/helm-charts
+  - name: altinity-clickhouse-operator
+    url: https://docs.altinity.com/clickhouse-operator/
   - name: strimzi
     url: https://strimzi.io/charts/
   - name: sentry
     url: https://sentry-kubernetes.github.io/charts
 
 releases:
+#  - name: altinity-clickhouse-operator
+#    namespace: kube-system
+#    timeout: 5m
+#    max_history: 3
+#    chart: altinity-clickhouse-operator/altinity-clickhouse-operator
+#    version: 0.22.1
+
   - name: zookeeper
     namespace: zookeeper
     create_namespace: true

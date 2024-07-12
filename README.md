@@ -56,7 +56,7 @@ helmwave up --build
 
 # clickhouse operator
 ```shell
-wget -N https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.22.1/deploy/operator/clickhouse-operator-install-bundle.yaml
+wget -N https://raw.githubusercontent.com/Altinity/clickhouse-operator/0.23.6/deploy/operator/clickhouse-operator-install-bundle.yaml
 kubectl apply -f clickhouse-operator-install-bundle.yaml
 ```
 
@@ -81,7 +81,8 @@ printf 'sentry-password' | sha256sum
 ```shell
 kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
-Ждем когда pod перейдут в состояние Running
+Ждем когда появятся 3 пода chi-sentry-clickhouse-sharded-x-0-0
+Ждем когда все pod перейдут в состояние Running
 
 # Установка sentry
 Расскоментируем sentry в helmwave.yml
