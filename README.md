@@ -16,11 +16,11 @@ Sentry обладает следующими преимуществами:
 
 Эти преимущества делают Sentry мощным и гибким инструментом для мониторинга ошибок, подходящим для различных проектов и команд.
 
-# Регистриуем домен на reg.ru
-# Исправляем домен apatsev.org.ru на ваш домен везде в коде
-# Версии приложений меняем осторожно, иначе могут быть баги, например https://github.com/ClickHouse/ClickHouse/issues/53749
+Регистриуем домен на reg.ru
+Исправляем домен apatsev.org.ru на ваш домен везде в коде
+Версии приложений меняем осторожно, иначе могут быть баги, например https://github.com/ClickHouse/ClickHouse/issues/53749
 
-# Kubernetes
+Создаем Kubernetes
 ```shell
 cd kubernetes
 terraform init
@@ -28,7 +28,7 @@ terraform apply
 cd ..
 ```
 
-# PostgreSQL
+Создаем PostgreSQL
 ```shell
 cd postgresql
 terraform init
@@ -38,7 +38,7 @@ terraform output owners_data
 cd ..
 ```
 
-# Redis
+Создаем Redis
 ```shell
 cd redis
 terraform init
@@ -48,7 +48,7 @@ terraform output password
 cd ..
 ```
 
-# S3
+Создаем S3
 ```shell
 cd s3
 terraform init
@@ -58,28 +58,30 @@ terraform output secret_key
 cd ..
 ```
 
-# Устанавливаем новое подключение к k8s
+Устанавливаем новое подключение к k8s
+```shell
+yc managed-kubernetes cluster get-credentials --id xxxx --external
+```
 
-# namespace sentry
+Создаем namespace sentry
 ```shell
 kubectl create namespace sentry
 ```
 
-# Установка zookeeper, altinity-clickhouse-operator, strimzi-kafka-operator
+Установка zookeeper, altinity-clickhouse-operator, strimzi-kafka-operator
 ```shell
 helmwave up --build
 ```
 Ждем когда pod перейдут в состояние Running
 
-# kafka
-# Из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
+Создаем kafka из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
 ```
 kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
 ```
 
-# Clickhouse
+Создаем Clickhouse. 
 Придумываем пароль и получаем от него sha256 хеш
 ```
 printf 'sentry-clickhouse-password' | sha256sum
@@ -99,7 +101,7 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 stern -n sentry -l clickhouse.altinity.com/chi=sentry-clickhouse
 ```
 
-# Установка sentry
+Устанавливаем sentry
 ```shell
 helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
