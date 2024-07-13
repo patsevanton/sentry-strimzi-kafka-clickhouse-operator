@@ -49,7 +49,7 @@ cd ..
 kubectl create namespace sentry
 ```
 
-# Установка zookeeper, strimzi-kafka-operator
+# Установка zookeeper, altinity-clickhouse-operator, strimzi-kafka-operator
 ```shell
 helmwave up --build
 ```
@@ -77,7 +77,11 @@ kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
 Ждем когда появятся 3 пода chi-sentry-clickhouse-sharded-x-0-0
 Ждем когда все pod перейдут в состояние Running
-Ждем когда все поды Clickhouse найдут друг друга и Clickhouse перестанет писать в логи ошибки ServerErrorHandler
+Ждем когда все поды Clickhouse найдут друг друга и Clickhouse перестанет писать в логи ошибки ServerErrorHandler или Cannot resolve host
+Чтобы увидеть логи Clickhouse, можно использовать stern для просмотра логов в namespace sentry
+```
+stern -n sentry -l clickhouse.altinity.com/chi=sentry-clickhouse
+```
 
 # Установка sentry
 ```shell
@@ -88,11 +92,16 @@ helm install sentry -n sentry sentry/sentry --version 23.1.0 -f values-sentry.ya
 
 Ждем Clickhouse миграции в pod snuba-migrate
 Ждем завершения PostgreSQL миграции в pod db-init-job
-Чтобы увидеть когда закончатся миграции, можно использовать stern для просмотра логов в namespace sentry
+Чтобы увидеть лог миграции snuba-migrate, можно использовать stern для просмотра логов в namespace sentry
 ```
-stern -n sentry .
+stern -n sentry -l job-name=sentry-snuba-migrate
 ```
 
+Чтобы увидеть лог миграции db-init, можно использовать stern для просмотра логов в namespace sentry
+```
+stern -n sentry -l job-name=sentry-db-init
+```
+Открываем URL, прописанный в system.url
 Входим в sentry по кредам, которые вы указали в этом коде
 ```
 user:
@@ -100,3 +109,28 @@ user:
   create: true
   email: логин-в-виде-email
 ```
+
+Создаем project, выбираем python.
+Создаем директорию example-python.
+Переходим в директорию example-python
+В директории example-python создаем main.py такого содержания
+```shell
+import sentry_sdk
+sentry_sdk.init(
+    dsn="http://xxxx@sentry.apatsev.org.ru/2",
+    traces_sample_rate=1.0,
+)
+
+try:
+    1 / 0
+except ZeroDivisionError:
+    sentry_sdk.capture_exception()
+```
+
+```shell
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade sentry-sdk
+```
+В Sentry видим следующую картину
+![](capture_exception.png)

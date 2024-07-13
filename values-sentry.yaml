@@ -6,19 +6,6 @@ user:
 system:
   url: "http://sentry.apatsev.org.ru"
 mail: {}
-# Используется image 24.5.1
-# из-за https://github.com/getsentry/self-hosted/issues/3102
-#images:
-#  sentry:
-#    tag: 24.5.1
-#  snuba:
-#    tag: 24.5.1
-#  relay:
-#    tag: 24.5.1
-#  symbolicator:
-#    tag: 24.5.1
-#  vroom:
-#    tag: 24.5.1
 config:
   snubaSettingsPy: |
     TOPIC_PARTITION_COUNTS = {
@@ -98,7 +85,6 @@ filestore:
     region_name: ru-central1
     bucketName: sentry-bucket-apatsev-dev
     endpointUrl: "https://storage.yandexcloud.net"
-    location: "sentry-debug-files" # Директория в бакете для https://docs.sentry.io/cli/dif/
 postgresql:
   enabled: false
 externalPostgresql:
@@ -138,24 +124,11 @@ externalClickhouse:
   tcpPort: 9000
   username: sentry
   singleNode: false
-sentry:
-  features:
-    enableProfiling: true
-  ingestReplayRecordings:
-    enabled: false
-  subscriptionConsumerEvents:
-    enabled: false
-  subscriptionConsumerGenericMetrics:
-    enabled: false
-  subscriptionConsumerMetrics:
-    enabled: false
-  subscriptionConsumerSessions:
-    enabled: false
-  subscriptionConsumerTransactions:
-    enabled: false
-  cleanup:
-    activeDeadlineSeconds: 1800
-    days: 14
+
+# https://github.com/getsentry/snuba/issues/4897
+# https://github.com/getsentry/snuba/issues/4921
+# https://github.com/getsentry/snuba/issues/4995
+# https://github.com/sentry-kubernetes/charts/issues/1042
 snuba:
   replaysConsumer:
     enabled: false
@@ -168,9 +141,9 @@ snuba:
   metricsConsumer:
     enabled: false
 symbolicator:
-  enabled: true
+  enabled: true # service for native stacktraces
 hooks:
-  activeDeadlineSeconds: 600
+  activeDeadlineSeconds: 600 # Если не указывать, будет ошибка sentry-snuba-migrate failed: DeadlineExceeded
   snubaInit:
     kafka:
       enabled: false
