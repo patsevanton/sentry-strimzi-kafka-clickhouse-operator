@@ -141,6 +141,7 @@ user:
   email: логин-в-виде-email
 ```
 
+Так как я не специалист по Android, iOS, frontend, то пример exception будет на python.
 Создаем project, выбираем python.
 Создаем директорию example-python.
 Переходим в директорию example-python.
