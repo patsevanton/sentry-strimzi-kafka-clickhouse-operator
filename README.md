@@ -153,6 +153,7 @@ except ZeroDivisionError:
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade sentry-sdk
+python3 main.py
 ```
 В Sentry видим следующую картину
 ![](capture_exception.png)
