@@ -12,8 +12,7 @@ metadata:
   name: events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -25,9 +24,7 @@ metadata:
   name: event-replacements
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -37,8 +34,7 @@ metadata:
   name: snuba-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -51,9 +47,7 @@ metadata:
   name: cdc
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -63,8 +57,7 @@ metadata:
   name: transactions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -76,8 +69,7 @@ metadata:
   name: snuba-transactions-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -90,8 +82,7 @@ metadata:
   name: snuba-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -103,9 +94,7 @@ metadata:
   name: outcomes
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -115,9 +104,7 @@ metadata:
   name: outcomes-billing
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -127,9 +114,7 @@ metadata:
   name: ingest-sessions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -139,8 +124,7 @@ metadata:
   name: snuba-sessions-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -153,8 +137,7 @@ metadata:
   name: snuba-metrics-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -167,9 +150,7 @@ metadata:
   name: scheduled-subscriptions-events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -179,9 +160,7 @@ metadata:
   name: scheduled-subscriptions-transactions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -191,9 +170,7 @@ metadata:
   name: scheduled-subscriptions-sessions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -203,9 +180,7 @@ metadata:
   name: scheduled-subscriptions-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -215,9 +190,7 @@ metadata:
   name: scheduled-subscriptions-generic-metrics-sets
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -227,9 +200,7 @@ metadata:
   name: scheduled-subscriptions-generic-metrics-distributions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -239,9 +210,7 @@ metadata:
   name: scheduled-subscriptions-generic-metrics-counters
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -251,9 +220,7 @@ metadata:
   name: events-subscription-results
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -263,9 +230,7 @@ metadata:
   name: transactions-subscription-results
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -275,9 +240,7 @@ metadata:
   name: sessions-subscription-results
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -287,9 +250,7 @@ metadata:
   name: metrics-subscription-results
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -299,9 +260,7 @@ metadata:
   name: generic-metrics-subscription-results
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -311,8 +270,7 @@ metadata:
   name: snuba-queries
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -324,8 +282,7 @@ metadata:
   name: processed-profiles
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -337,9 +294,7 @@ metadata:
   name: profiles-call-tree
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -349,10 +304,9 @@ metadata:
   name: ingest-replay-events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
-    message.timestamp.type": LogAppendTime
+    "message.timestamp.type": LogAppendTime
     "max.message.bytes": "15000000"
 ---
 apiVersion: kafka.strimzi.io/v1beta2
@@ -363,8 +317,7 @@ metadata:
   name: snuba-generic-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -376,8 +329,7 @@ metadata:
   name: snuba-generic-metrics-sets-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -390,8 +342,7 @@ metadata:
   name: snuba-generic-metrics-distributions-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -404,8 +355,7 @@ metadata:
   name: snuba-generic-metrics-counters-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -418,8 +368,7 @@ metadata:
   name: generic-events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -431,8 +380,7 @@ metadata:
   name: snuba-generic-events-commit-log
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "cleanup.policy": "compact,delete"
     "min.compaction.lag.ms": "3600000"
@@ -445,8 +393,7 @@ metadata:
   name: group-attributes
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
+  partitions: 1
   config:
     "message.timestamp.type": LogAppendTime
 ---
@@ -458,9 +405,7 @@ metadata:
   name: snuba-attribution
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -470,9 +415,7 @@ metadata:
   name: snuba-dead-letter-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -482,9 +425,7 @@ metadata:
   name: snuba-dead-letter-metrics-sets
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -494,9 +435,7 @@ metadata:
   name: snuba-dead-letter-metrics-counters
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -506,9 +445,7 @@ metadata:
   name: snuba-dead-letter-metrics-distributions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -518,9 +455,7 @@ metadata:
   name: snuba-dead-letter-sessions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -530,9 +465,7 @@ metadata:
   name: snuba-dead-letter-generic-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -542,9 +475,7 @@ metadata:
   name: snuba-dead-letter-replays
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -554,9 +485,7 @@ metadata:
   name: snuba-dead-letter-generic-events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -566,9 +495,7 @@ metadata:
   name: snuba-dead-letter-querylog
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -578,9 +505,7 @@ metadata:
   name: snuba-dead-letter-group-attributes
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -590,9 +515,7 @@ metadata:
   name: ingest-attachments
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -602,9 +525,7 @@ metadata:
   name: ingest-transactions
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -614,9 +535,7 @@ metadata:
   name: ingest-events
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -626,9 +545,7 @@ metadata:
   name: ingest-replay-recordings
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -638,9 +555,7 @@ metadata:
   name: ingest-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -650,9 +565,7 @@ metadata:
   name: ingest-performance-metrics
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -662,9 +575,7 @@ metadata:
   name: ingest-monitors
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -674,9 +585,7 @@ metadata:
   name: profiles
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -686,9 +595,7 @@ metadata:
   name: ingest-occurrences
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -698,9 +605,7 @@ metadata:
   name: snuba-spans
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -710,9 +615,7 @@ metadata:
   name: shared-resources-usage
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1
 ---
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
@@ -722,6 +625,4 @@ metadata:
   name: snuba-metrics-summaries
   namespace: sentry
 spec:
-  partitions: 10
-  replicas: 2
-  config: {}
+  partitions: 1

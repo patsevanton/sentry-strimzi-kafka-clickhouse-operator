@@ -73,6 +73,8 @@ kubectl create namespace sentry
 ```
 
 Установливаем zookeeper, altinity-clickhouse-operator, strimzi-kafka-operator.
+Вместо 3 запусков helm запустим 1 раз helmwave.
+Helm репозитории и настройки описаны в файле helmwave.yml
 ```shell
 helmwave up --build
 ```
@@ -83,6 +85,11 @@ helmwave up --build
 kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
+```
+
+Смотрим логи в namespace sentry на предмет ошибок kafka.
+```
+stern -n sentry .
 ```
 
 Создаем Clickhouse. 
@@ -123,6 +130,12 @@ stern -n sentry -l job-name=sentry-snuba-migrate
 ```
 stern -n sentry -l job-name=sentry-db-init
 ```
+
+Смотрим логи в namespace sentry на предмет разных ошибок.
+```
+stern -n sentry .
+```
+
 Открываем URL, прописанный в system.url.
 Входим в sentry по кредам, которые вы указали в этом коде.
 ```
