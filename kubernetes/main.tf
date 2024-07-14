@@ -50,3 +50,62 @@ module "kube" {
   depends_on = [ module.iam_accounts ]
 
 }
+
+module "address" {
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-address.git"
+
+  ip_address_name = "apatsev-pip"
+  folder_id       = "xxxx"
+  zone            = "ru-central1-a"
+}
+
+module "dns-zone" {
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone"
+
+  folder_id = "xxxx"
+  name        = "apatsev-org-ru-zone"
+
+  zone             = "apatsev.org.ru." # Точка в конце обязательна
+  is_public        = true
+  private_networks = ["xxxx"] # network_id
+}
+
+module "dns-recordset" {
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/recordset"
+
+  folder_id = "xxxx"
+  zone_id   = module.dns-zone.id
+  name      = "sentry.apatsev.org.ru." # Точка в конце обязательна
+  type      = "A"
+  ttl       = 200
+  data      = [
+    module.address.external_ipv4_address
+  ]
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.kube.external_v4_endpoint
+    cluster_ca_certificate = module.kube.cluster_ca_certificate
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["k8s", "create-token"]
+      command     = "yc"
+    }
+  }
+}
+
+resource "helm_release" "ingress_nginx" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  version    = "4.10.1"
+  namespace  = "ingress-nginx"
+  create_namespace = true
+  depends_on = [ module.kube ]
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = module.address.external_ipv4_address
+  }
+
+}

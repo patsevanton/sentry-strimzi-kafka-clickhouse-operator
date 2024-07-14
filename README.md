@@ -104,9 +104,7 @@ printf 'sentry-clickhouse-password' | sha256sum
 ```shell
 kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
-Ждем когда появятся 3 пода chi-sentry-clickhouse-sharded-x-0-0.
 Ждем когда все pod перейдут в состояние Running.
-Ждем когда все поды Clickhouse найдут друг друга и Clickhouse перестанет писать в логи ошибки ServerErrorHandler или Cannot resolve host.
 Чтобы увидеть логи Clickhouse, можно использовать stern для просмотра логов в namespace sentry.
 ```
 stern -n sentry -l clickhouse.altinity.com/chi=sentry-clickhouse

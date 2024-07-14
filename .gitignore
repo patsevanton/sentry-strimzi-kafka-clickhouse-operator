@@ -38,3 +38,4 @@ terraform.rc
 .terraform.lock.hcl
 /.helmwave/**
 /clickhouse-operator-install-bundle.yaml
+example-python/venv/**

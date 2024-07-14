@@ -1,9 +1,9 @@
 module "db" {
-  source  = "git::https://github.com/terraform-yc-modules/terraform-yc-postgresql.git"
+  source = "git::https://github.com/terraform-yc-modules/terraform-yc-postgresql.git"
 
-  network_id  = "xxxx"
-  name        = "apatsev-postgresql"
-  folder_id   = "xxxx"
+  folder_id  = "xxxx"
+  network_id = "xxxx"
+  name       = "apatsev-postgresql"
 
   hosts_definition = [
     {
@@ -14,7 +14,7 @@ module "db" {
   ]
 
   postgresql_config = {
-    max_connections                = 395
+    max_connections = 395
   }
 
   databases = [
@@ -29,8 +29,24 @@ module "db" {
 
   owners = [
     {
-      name       = "sentry"
-      password   = "sentry-postgresql-password"
+      name     = "sentry"
+      password = "sentry-postgresql-password"
     }
   ]
+}
+
+output "fqdn_database" {
+  value     = "c-${module.db.cluster_id}.rw.mdb.yandexcloud.net"
+  sensitive = false
+}
+
+output "owners_data" {
+  description = "List of owners with passwords."
+  sensitive   = true
+  value       = module.db.owners_data
+}
+
+output "databases" {
+  description = "List of databases names."
+  value       = module.db.databases
 }

@@ -8,19 +8,13 @@ spec:
   reconciling:
     policy: wait
   defaults:
-    distributedDDL:
-      profile: default
     templates:
-      dataVolumeClaimTemplate: default
-      podTemplate: clickhouse
-      serviceTemplate: internal
+      dataVolumeClaimTemplate: default # Описан ниже
+      podTemplate: clickhouse # Описан ниже
+      serviceTemplate: internal # Описан ниже
   configuration:
     settings:
-      timezone: UTC
       logger/level: error
-      clickhouse/distributed_ddl/path: /clickhouse/task_queue/ddl
-      clickhouse/distributed_ddl/profile: default
-      clickhouse/distributed_ddl/pool_size: 8
     users:
       sentry/profile: default
       sentry/networks/ip:
@@ -28,10 +22,8 @@ spec:
         - "10.0.0.0/8"
       sentry/password_sha256_hex: "8afd9a754e80697b2b8d863116351019d27bf9e6f819414b2fd63432a55cd41f"  # Хеш пароля "sentry-clickhouse-password"
       sentry/quota: default
-
     profiles:
       readonly/readonly: "2"  # Профиль только для чтения
-      default/distributed_product_mode: "allow"
     zookeeper:
       nodes:
         - host: zookeeper.zookeeper.svc.cluster.local
@@ -41,8 +33,7 @@ spec:
         secret:
           auto: "True"  # Автоматическое управление секретами
         layout:
-          shardsCount: 3  # Количество шардов в кластере
-
+          shardsCount: 1  # Количество шардов в кластере
   templates:
     serviceTemplates:
       - name: internal
@@ -67,14 +58,6 @@ spec:
     podTemplates:
       - name: clickhouse
         spec:
-          terminationGracePeriodSeconds: 3600
           containers:
             - name: clickhouse
               image: clickhouse/clickhouse-server:23.3.8.21
-              resources:
-                requests:
-                  memory: 4Gi
-                  cpu: 1
-                limits:
-                  memory: 4Gi
-                  cpu: 1
