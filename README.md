@@ -339,6 +339,7 @@ docker run -p 80:80 sentry-example
 
 Нажимаем на Throw error 
 ![](sentry_react_example.png)
+
 В Sentry видим exception
 ![](sentry_react_exception.png)
 
