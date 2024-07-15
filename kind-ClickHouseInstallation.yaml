@@ -5,8 +5,6 @@ metadata:
   name: sentry-clickhouse
   namespace: sentry
 spec:
-  reconciling:
-    policy: wait
   defaults:
     templates:
       dataVolumeClaimTemplate: default # Описан ниже
@@ -22,14 +20,12 @@ spec:
         - "10.0.0.0/8"
       sentry/password_sha256_hex: "8afd9a754e80697b2b8d863116351019d27bf9e6f819414b2fd63432a55cd41f"  # Хеш пароля "sentry-clickhouse-password"
       sentry/quota: default
-    profiles:
-      readonly/readonly: "2"  # Профиль только для чтения
     zookeeper:
       nodes:
         - host: zookeeper.zookeeper.svc.cluster.local
           port: 2181
     clusters:
-      - name: sharded  # Имя кластера: chi-sentry-sharded-<x>-<x>-<x>
+      - name: sentry  # Имя кластера: chi-sentry-sentry-<x>-<x>-<x>
         secret:
           auto: "True"  # Автоматическое управление секретами
         layout:

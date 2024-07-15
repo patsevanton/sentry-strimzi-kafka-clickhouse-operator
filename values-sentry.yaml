@@ -119,26 +119,10 @@ externalClickhouse:
   host: ch-sentry-clickhouse.sentry.svc
   database: default
   httpPort: 8123
-  clusterName: sharded
+  clusterName: sentry
   tcpPort: 9000
   username: sentry
-  singleNode: false
-
-# https://github.com/getsentry/snuba/issues/4897
-# https://github.com/getsentry/snuba/issues/4921
-# https://github.com/getsentry/snuba/issues/4995
-# https://github.com/sentry-kubernetes/charts/issues/1042
-snuba:
-  replaysConsumer:
-    enabled: false
-  genericMetricsCountersConsumer:
-    enabled: false
-  genericMetricsDistributionsConsumer:
-    enabled: false
-  genericMetricsSetsConsumer:
-    enabled: false
-  metricsConsumer:
-    enabled: false
+  singleNode: true
 symbolicator:
   enabled: true # service for native stacktraces
 hooks:
