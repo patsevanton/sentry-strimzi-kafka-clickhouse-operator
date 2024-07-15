@@ -169,3 +169,5 @@ python3 main.py
 ![](capture_exception.png)
 
 В следующем посте будет рассмотрено репликация, шардинг, мониторинг компонентов Sentry
+
+Telegram чат по Sentry https://t.me/sentry_ru
