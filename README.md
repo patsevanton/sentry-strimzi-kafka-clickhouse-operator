@@ -344,6 +344,9 @@ docker run -p 80:80 sentry-example
 ![](sentry_react_exception.png)
 
 
+https://github.com/sentry-demos/android
+https://github.com/getsentry/sentry-java/tree/main/sentry-samples/sentry-samples-android
+
 В следующем посте будет рассмотрено репликация, шардинг, мониторинг компонентов Sentry
 
 Telegram чат по Sentry https://t.me/sentry_ru
