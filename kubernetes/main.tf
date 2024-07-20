@@ -1,7 +1,7 @@
 module "iam_accounts" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account?ref=v1.0.0"
 
-  name      = "iam-yandex-kubernetes"
+  name = "iam-yandex-kubernetes"
   folder_roles = [
     "container-registry.images.puller",
     "k8s.clusters.agent",
@@ -17,7 +17,7 @@ module "iam_accounts" {
 }
 
 module "kube" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes.git?ref=v1.0.0"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes.git?ref=v1.1.0"
 
   folder_id  = "xxxx"
   network_id = "xxxx"
@@ -47,7 +47,7 @@ module "kube" {
     }
   }
 
-  depends_on = [ module.iam_accounts ]
+  depends_on = [module.iam_accounts]
 
 }
 
@@ -63,7 +63,7 @@ module "dns-zone" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone?ref=v1.0.0"
 
   folder_id = "xxxx"
-  name        = "apatsev-org-ru-zone"
+  name      = "apatsev-org-ru-zone"
 
   zone             = "apatsev.org.ru." # Точка в конце обязательна
   is_public        = true
@@ -78,7 +78,7 @@ module "dns-recordset" {
   name      = "sentry.apatsev.org.ru." # Точка в конце обязательна
   type      = "A"
   ttl       = 200
-  data      = [
+  data = [
     module.address.external_ipv4_address
   ]
 }
@@ -96,13 +96,13 @@ provider "helm" {
 }
 
 resource "helm_release" "ingress_nginx" {
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx"
-  version    = "4.10.1"
-  namespace  = "ingress-nginx"
+  name             = "ingress-nginx"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  chart            = "ingress-nginx"
+  version          = "4.10.1"
+  namespace        = "ingress-nginx"
   create_namespace = true
-  depends_on = [ module.kube ]
+  depends_on       = [module.kube]
   set {
     name  = "controller.service.loadBalancerIP"
     value = module.address.external_ipv4_address

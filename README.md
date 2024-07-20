@@ -22,7 +22,7 @@ Sentry обладает следующими преимуществами:
 
 Регистриуем домен на reg.ru. Исправляем домен apatsev.org.ru на ваш домен везде в коде. Версии приложений меняем осторожно, иначе могут быть баги, например https://github.com/ClickHouse/ClickHouse/issues/53749.
 
-Создаем Kubernetes.
+Создаем Kubernetes из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes
 ```shell
 cd kubernetes
 terraform init
@@ -30,7 +30,7 @@ terraform apply
 cd ..
 ```
 
-Создаем PostgreSQL.
+Создаем PostgreSQL из модуля https://github.com/terraform-yc-modules/terraform-yc-postgresql
 ```shell
 cd postgresql
 terraform init
@@ -40,7 +40,7 @@ terraform output owners_data
 cd ..
 ```
 
-Создаем Redis.
+Создаем Redis из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-redis
 ```shell
 cd redis
 terraform init
@@ -50,7 +50,7 @@ terraform output password
 cd ..
 ```
 
-Создаем S3.
+Создаем S3 из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-storage-bucket
 ```shell
 cd s3
 terraform init
@@ -59,6 +59,8 @@ terraform output access_key
 terraform output secret_key
 cd ..
 ```
+
+Адреса, креды PostgreSQL, Redis, S3 прописываем в файле values-sentry.yaml
 
 Устанавливаем новое подключение к k8s.
 ```shell
@@ -71,41 +73,41 @@ kubectl create namespace sentry
 ```
 
 Установливаем zookeeper, altinity-clickhouse-operator, strimzi-kafka-operator.
-Вместо 3 запусков helm запустим 1 раз helmwave.
+Вместо 3 запусков helm запустим 1 раз [helmwave](https://github.com/helmwave/helmwave).
 Helm репозитории и настройки описаны в файле helmwave.yml
 ```shell
 helmwave up --build
 ```
 Ждем когда pod перейдут в состояние Running.
 
-Создаем kafka из примеров https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka берем Kafka и KafkaTopic
+Создаем kafka-node-pool, kafka, kafka-topics с помощью https://github.com/strimzi/strimzi-kafka-operator.
+Примеры берем отсюда https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka
 ```
 kubectl apply -f kafka-node-pool.yaml
 kubectl apply -f kafka.yaml
 kubectl apply -f kafka-topics.yaml
 ```
 
-Смотрим логи в namespace sentry на предмет ошибок kafka.
+Ждем когда поды Kafka перейдут в состояние Ready, например через [k9s](https://github.com/derailed/k9s)
 ```
-stern -n sentry .
+k9s -A
 ```
 
-Создаем Clickhouse. 
-Придумываем пароль и получаем от него sha256 хеш.
+Создаем Clickhouse. Придумываем пароль и получаем от него sha256 хеш.
 ```
 printf 'sentry-clickhouse-password' | sha256sum
 ```
-Полученный хеш вставляем в поле "sentry/password_sha256_hex"
+Полученный хеш вставляем в поле "sentry/password_sha256_hex" в файле kind-ClickHouseInstallation.yaml
 
 Из примеров https://github.com/Altinity/clickhouse-operator/tree/master/docs/chi-examples делаем конфиг для clickhouse
 Затем применяем его
 ```shell
 kubectl apply -f kind-ClickHouseInstallation.yaml
 ```
-Ждем когда все pod перейдут в состояние Running.
-Чтобы увидеть логи Clickhouse, можно использовать stern для просмотра логов в namespace sentry.
+
+Ждем когда pod Clickhouse перейдут в состояние Ready, например через [k9s](https://github.com/derailed/k9s)
 ```
-stern -n sentry -l clickhouse.altinity.com/chi=sentry-clickhouse
+k9s -A
 ```
 
 Устанавливаем sentry.
@@ -116,13 +118,13 @@ helm install sentry -n sentry sentry/sentry --version 23.1.0 -f values-sentry.ya
 ```
 
 Ждем Clickhouse миграции в pod snuba-migrate.
-Ждем завершения PostgreSQL миграции в pod db-init-job.
-Чтобы увидеть лог миграции snuba-migrate, можно использовать stern для просмотра логов в namespace sentry.
+Чтобы увидеть лог миграции snuba-migrate, можно использовать [stern](https://github.com/stern/stern) для просмотра логов в namespace sentry.
 ```
 stern -n sentry -l job-name=sentry-snuba-migrate
 ```
 
-Чтобы увидеть лог миграции db-init, можно использовать stern для просмотра логов в namespace sentry.
+Ждем завершения PostgreSQL миграции в pod db-init-job.
+Чтобы увидеть лог миграции db-init, можно использовать [stern](https://github.com/stern/stern) для просмотра логов в namespace sentry.
 ```
 stern -n sentry -l job-name=sentry-db-init
 ```
