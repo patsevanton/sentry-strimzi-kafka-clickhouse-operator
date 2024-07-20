@@ -1,5 +1,5 @@
 module "iam_accounts" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account?ref=v1.0.0"
 
   name      = "iam-yandex-kubernetes"
   folder_roles = [
@@ -17,7 +17,7 @@ module "iam_accounts" {
 }
 
 module "kube" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes.git"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes.git?ref=v1.0.0"
 
   folder_id  = "xxxx"
   network_id = "xxxx"
@@ -52,7 +52,7 @@ module "kube" {
 }
 
 module "address" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-address.git"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-address.git?ref=v1.0.0"
 
   ip_address_name = "apatsev-pip"
   folder_id       = "xxxx"
@@ -60,7 +60,7 @@ module "address" {
 }
 
 module "dns-zone" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/zone?ref=v1.0.0"
 
   folder_id = "xxxx"
   name        = "apatsev-org-ru-zone"
@@ -71,7 +71,7 @@ module "dns-zone" {
 }
 
 module "dns-recordset" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/recordset"
+  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-dns.git//modules/recordset?ref=v1.0.0"
 
   folder_id = "xxxx"
   zone_id   = module.dns-zone.id
