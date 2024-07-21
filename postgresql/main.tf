@@ -3,7 +3,7 @@ module "db" {
 
   folder_id  = "xxxx"
   network_id = "xxxx"
-  name       = "apatsev-postgresql"
+  name       = "sentry-postgresql"
 
   hosts_definition = [
     {

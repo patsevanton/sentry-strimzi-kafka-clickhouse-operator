@@ -1,4 +1,4 @@
-**Узнайте, как установить sentry в kubernetes, отловить exception на мобильных устройствах и в браузере. Часть 1**
+**Как установить sentry в kubernetes, отловить exception на бекенде и в браузере**
 
 В статье рассматривается Sentry — инструмент для сбора exception, который помогает разработчикам быстро обнаруживать и устранять проблемы, сокращая время выхода новых релизов и повышая удовлетворенность пользователей.
 
@@ -78,7 +78,11 @@ Helm репозитории и настройки описаны в файле h
 ```shell
 helmwave up --build
 ```
-Ждем когда pod перейдут в состояние Running.
+
+Ждем когда поды перейдут в состояние Ready, например через [k9s](https://github.com/derailed/k9s)
+```
+k9s -A
+```
 
 Создаем kafka-node-pool, kafka, kafka-topics с помощью https://github.com/strimzi/strimzi-kafka-operator.
 Примеры берем отсюда https://github.com/strimzi/strimzi-kafka-operator/tree/main/examples/kafka
@@ -114,7 +118,7 @@ k9s -A
 ```shell
 helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
-helm install sentry -n sentry sentry/sentry --version 23.1.0 -f values-sentry.yaml
+helm upgrade --install sentry -n sentry sentry/sentry --version 23.1.0 -f values-sentry.yaml
 ```
 
 Ждем Clickhouse миграции в pod snuba-migrate.
@@ -345,9 +349,15 @@ docker run -p 80:80 sentry-example
 В Sentry видим exception
 ![](sentry_react_exception.png)
 
-
+Пробуем запустить
 https://github.com/sentry-demos/android
 https://github.com/getsentry/sentry-java/tree/main/sentry-samples/sentry-samples-android
+
+Идем в http://sentry.apatsev.org.ru/settings/sentry/auth-tokens/.
+Создаем новый token:
+![](сreate_new_auth_token.png)
+
+Устанавливаем утилиту https://github.com/getsentry/sentry-cli
 
 В следующем посте будет рассмотрено репликация, шардинг, мониторинг компонентов Sentry
 

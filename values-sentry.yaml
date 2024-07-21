@@ -88,6 +88,7 @@ filestore:
     region_name: ru-central1
     bucketName: sentry-bucket-apatsev-dev
     endpointUrl: "https://storage.yandexcloud.net"
+    location: "debug-files" # https://docs.sentry.io/platforms/android/data-management/debug-files/
 postgresql:
   enabled: false
 externalPostgresql:

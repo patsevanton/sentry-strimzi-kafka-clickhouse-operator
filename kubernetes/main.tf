@@ -1,7 +1,7 @@
 module "iam_accounts" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-iam.git//modules/iam-account?ref=v1.0.0"
 
-  name = "iam-yandex-kubernetes"
+  name = "iam-sentry-kubernetes"
   folder_roles = [
     "container-registry.images.puller",
     "k8s.clusters.agent",
@@ -22,7 +22,7 @@ module "kube" {
   folder_id  = "xxxx"
   network_id = "xxxx"
 
-  name = "k8s-apatsev"
+  name = "k8s-sentry"
 
   service_account_id      = module.iam_accounts.id
   node_service_account_id = module.iam_accounts.id
@@ -54,7 +54,7 @@ module "kube" {
 module "address" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-address.git?ref=v1.0.0"
 
-  ip_address_name = "apatsev-pip"
+  ip_address_name = "sentry-pip"
   folder_id       = "xxxx"
   zone            = "ru-central1-a"
 }

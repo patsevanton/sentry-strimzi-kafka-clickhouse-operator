@@ -2,7 +2,7 @@ module "redis" {
   source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-redis.git?ref=v1.0.0"
 
   folder_id  = "xxxx"
-  name       = "apatsev-redis"
+  name       = "sentry-redis"
   network_id = "xxxxx"
   password   = "sentry-redis-password"
   zone       = "ru-central1-a"
