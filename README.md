@@ -153,10 +153,8 @@ user:
   email: логин-в-виде-email
 ```
 
-Так как я не специалист по Android, iOS, frontend, то пример exception будет на python.
-Создаем project, выбираем python.
-Создаем директорию example-python.
-Переходим в директорию example-python.
+# Backend. Пример exception на python.
+Создаем project, выбираем python. Создаем директорию example-python. Переходим в директорию example-python.
 В директории example-python создаем main.py такого содержания.
 ```shell
 import sentry_sdk
@@ -181,7 +179,7 @@ python3 main.py
 ![](capture_exception.png)
 
 
-# Frontend
+# Frontend. Пример exception на React.
 Вот пример простого React кода для отправки исключения (exception) в Sentry через браузер, 
 а также Dockerfile для контейнеризации этого приложения.
 
@@ -355,6 +353,7 @@ docker run -p 80:80 sentry-example
 В Sentry видим exception
 ![](sentry_react_exception.png)
 
+# Mobile. Пример exception на android.
 Пробуем запустить
 https://github.com/sentry-demos/android
 
@@ -377,7 +376,11 @@ File -> Sync Project with Gradle Files
 Идем в Settings -> Auth Token -> Create New token
 ![](create_new_auth_token.png)
 
-Устанавливаем утилиту https://github.com/getsentry/sentry-cli
+В корне домашней директории пользователя, кто запускает команду sentry-cli, создаем файл .sentryclirc с содержимым:
+```
+[auth]
+token=auth-token-sentry-demos-android
+```
 
 В качестве эмулятор android используем Nexus 5x API 29 x86, Pixel 2 API 29. 
 
@@ -398,9 +401,10 @@ SENTRY_ORG=sentry # Поменяйте на вашу организацию.
 SENTRY_PROJECT=android # Поменяйте на ваш проект.
 ```
 
-В sentry.properties поменяйте организацию на sentry
+В sentry.properties поменяйте организацию на sentry и пропишите Auth Token
 ```
 defaults.org=sentry
+auth.token=auth-token-sentry-demos-android
 ```
 
 Добавьте следующий код в тег `<application>` вашего AndroidManifest.xml:
@@ -414,15 +418,8 @@ android:usesCleartextTraffic="true"
 Это позволит избежать ошибки `java.io.IOException: Cleartext HTTP traffic to sentry.apatsev.org.ru not permitted`, которая указывает на то, 
 что приложение пытается отправить данные на сервер Sentry по незашифрованному HTTP-протоколу, что запрещено.
 
-Авторизируйте в вашем Sentry
-```shell
-sentry-cli --url http://sentry.apatsev.org.ru/ login
-```
+Устанавливаем утилиту https://github.com/getsentry/sentry-cli
 
-В корне домашней директории пользователя, кто запускает команду sentry-cli, создаем файл .sentryclirc с содержимым:
-```
-[auth]
-token=auth-token-sentry-demos-android
 ```
 
 Запустите сборку
@@ -430,7 +427,8 @@ token=auth-token-sentry-demos-android
 make all
 ```
 
-Запустите приложение в Android эмуляторе
+Запускаем эмулятор. Нажимаем run app в Android Studio. В самом приложении нажимаем на 3 вертикальные точки.
+Затем нажимаем на List App и нажимаем на разные кнопки получая разные Exception.s
 
 ![](exception_from_android.png)
 
