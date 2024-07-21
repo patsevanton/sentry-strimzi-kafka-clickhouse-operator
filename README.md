@@ -20,9 +20,13 @@ Sentry обладает следующими преимуществами:
 
 В этом посте будет рассмотрена минимальная установка Sentry в Kubernetes c clickhouse-operator и kafka-operator, так как установка sentry в kubernetes имеет много подводных камней. Используется clickhouse operator, так как sentry не работает с более новыми версиями clickhouse, которые предлагает Яндекс облако.
 
+Разворачиваем Sentry сразу в почти production среде. Для этого используем Яндекс Облако, Managed Kubernetes, Managed PostgreSQL, Managed Redis, Managed S3.
+
 Регистриуем домен на reg.ru. Исправляем домен apatsev.org.ru на ваш домен везде в коде. Версии приложений меняем осторожно, иначе могут быть баги, например https://github.com/ClickHouse/ClickHouse/issues/53749.
 
-Создаем Kubernetes из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes
+В конфигурационных файлах terraform заполняем folder_id, network_id, subnet_id.s
+
+Создаем Kubernetes с помощью модуля https://github.com/terraform-yacloud-modules/terraform-yandex-kubernetes
 ```shell
 cd kubernetes
 terraform init
@@ -30,7 +34,7 @@ terraform apply
 cd ..
 ```
 
-Создаем PostgreSQL из модуля https://github.com/terraform-yc-modules/terraform-yc-postgresql
+Создаем PostgreSQL с помощью модуля https://github.com/terraform-yc-modules/terraform-yc-postgresql
 ```shell
 cd postgresql
 terraform init
@@ -40,7 +44,7 @@ terraform output owners_data
 cd ..
 ```
 
-Создаем Redis из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-redis
+Создаем Redis с помощью модуля https://github.com/terraform-yacloud-modules/terraform-yandex-redis
 ```shell
 cd redis
 terraform init
@@ -50,7 +54,7 @@ terraform output password
 cd ..
 ```
 
-Создаем S3 из модуля https://github.com/terraform-yacloud-modules/terraform-yandex-storage-bucket
+Создаем S3 с помощью модуля https://github.com/terraform-yacloud-modules/terraform-yandex-storage-bucket
 ```shell
 cd s3
 terraform init
@@ -351,13 +355,70 @@ docker run -p 80:80 sentry-example
 
 Пробуем запустить
 https://github.com/sentry-demos/android
-https://github.com/getsentry/sentry-java/tree/main/sentry-samples/sentry-samples-android
 
+В случае ошибок ответы можно найти в Readme репозитория.
+
+Склонируйте репозиторий
+```shell
+git clone git@github.com:sentry-demos/android.git
+```
+Синхронизируйте проект с файлами Gradle.
+```
+Tools -> Android -> Sync Project with Gradle Files
+
+In some Android Studio version this will be available under:
+
+File -> Sync Project with Gradle Files
+```
 Идем в http://sentry.apatsev.org.ru/settings/sentry/auth-tokens/.
-Создаем новый token:
-![](сreate_new_auth_token.png)
+Создаем новый token с названием sentry-demos-android:
+Идем в Settings -> Auth Token -> Create New token
+![](create_new_auth_token.png)
 
 Устанавливаем утилиту https://github.com/getsentry/sentry-cli
+
+В качестве эмулятор android используем Nexus 5x API 29 x86, Pixel 2 API 29. 
+
+Поместите ваш ключ DSN Sentry в файл AndroidManifest.xml
+```
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="http://166c996d93bc76f7706c1cf30fcd91af@sentry.apatsev.org.ru/2" />
+```
+
+Поместите проект и организацию в файл Makefile.
+```
+SENTRY_ORG=sentry # Поменяйте на вашу организацию. По умолчанию в локальном Sentry организация sentry
+SENTRY_PROJECT=android # Поменяйте на ваш проект. По умолчанию при создании Android проекта название проекта будет Android
+```
+
+В sentry.properties поменяйте организацию на sentry
+```
+defaults.org=sentry
+```
+
+Добавьте следующий код в тег <application> вашего AndroidManifest.xml:
+<application
+...
+android:usesCleartextTraffic="true">
+...
+</application>
+Это позволит избежать ошибки java.io.IOException: Cleartext HTTP traffic to sentry.apatsev.org.ru not permitted указывает на то, 
+что приложение пытается отправить данные на сервер Sentry по незашифрованному HTTP-протоколу, что запрещено.
+
+Авторизируйте в вашем Sentry
+```shell
+sentry-cli --url http://sentry.apatsev.org.ru/ login
+```
+
+Запустите сборку
+```shell
+make all
+```
+
+Запустите приложение в Android эмуляторе
+
+![](exception_from_android.png)
 
 В следующем посте будет рассмотрено репликация, шардинг, мониторинг компонентов Sentry
 
